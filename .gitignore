@@ -1,0 +1,8 @@
+__pycache__
+*.egg-info
+/venv
+.mypy_cache
+.coverage
+
+ci/test/reports/**
+ci/lint/reports/**
