@@ -9,6 +9,9 @@ class Position:
         self._horizontal = horizontal
         self._vertical = vertical
 
+    def moved_vertically(self) -> 'Position':
+        return Position(self._horizontal, self._vertical + 1)
+
     def horizontal(self) -> int:
         return self._horizontal
 
@@ -40,7 +43,8 @@ class MarsRoverApplication:
             raise RuntimeError("Can't move, no rover landed yet")
         horizontal, vertical = self._rover_position.split()
         position = Position(int(horizontal), int(vertical))
-        self._rover_position = f'{position.horizontal()} {position.vertical() + 1}'
+        new_position = position.moved_vertically()
+        self._rover_position = f'{new_position.horizontal()} {new_position.vertical()}'
 
 
 class TestMarsRoverApplication:
@@ -87,3 +91,6 @@ class TestPosition:
 
     def test_two_positions_with_different_vertical_point(self) -> None:
         assert Position(3, 4) != Position(3, 5)
+
+    def test_position_moved_vertically(self) -> None:
+        assert Position(3, 4).moved_vertically() == Position(3, 5)
