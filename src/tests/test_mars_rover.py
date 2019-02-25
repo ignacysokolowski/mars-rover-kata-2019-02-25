@@ -114,10 +114,10 @@ class West(Direction):
         return 'W'
 
     def points_north(self) -> int:
-        raise NotImplementedError()
+        return 0
 
     def points_east(self) -> int:
-        raise NotImplementedError()
+        return -1
 
 
 class Coordinates:
@@ -259,6 +259,7 @@ class TestMarsRoverApplication:
             ('3 3 S', '3 2 S'),
             ('2 3 S', '2 2 S'),
             ('3 4 E', '4 4 E'),
+            ('3 4 W', '2 4 W'),
         ]
     )
     def test_moves_rover_forward(
