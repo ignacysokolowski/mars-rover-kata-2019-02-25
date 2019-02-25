@@ -70,12 +70,36 @@ class TestPosition:
 class TestRover:
 
     @pytest.mark.parametrize(
+        ('direction', 'initial_coordinates', 'final_coordinates'), [
+            (Direction.north(), Coordinates(3, 4), Coordinates(3, 5)),
+            (Direction.north(), Coordinates(3, 3), Coordinates(3, 4)),
+            (Direction.north(), Coordinates(2, 3), Coordinates(2, 4)),
+            (Direction.south(), Coordinates(3, 4), Coordinates(3, 3)),
+            (Direction.south(), Coordinates(3, 3), Coordinates(3, 2)),
+            (Direction.south(), Coordinates(2, 3), Coordinates(2, 2)),
+            (Direction.east(), Coordinates(3, 4), Coordinates(4, 4)),
+            (Direction.west(), Coordinates(3, 4), Coordinates(2, 4)),
+        ],
+        ids=repr
+    )
+    def test_moves_forward(
+            self,
+            direction: Direction,
+            initial_coordinates: Coordinates,
+            final_coordinates: Coordinates,
+    ) -> None:
+        rover = Rover(Position(direction, initial_coordinates))
+        rover.move_forward()
+        assert rover.position() == Position(direction, final_coordinates)
+
+    @pytest.mark.parametrize(
         ('initial_direction', 'final_direction'), [
             (Direction.north(), Direction.east()),
             (Direction.east(), Direction.south()),
             (Direction.south(), Direction.west()),
             (Direction.west(), Direction.north()),
-        ]
+        ],
+        ids=repr
     )
     def test_turns_right(self, initial_direction: Direction, final_direction: Direction) -> None:
         rover = Rover(Position(initial_direction, Coordinates(3, 3)))
@@ -88,7 +112,8 @@ class TestRover:
             (Direction.west(), Direction.south()),
             (Direction.south(), Direction.east()),
             (Direction.east(), Direction.north()),
-        ]
+        ],
+        ids=repr
     )
     def test_turns_left(self, initial_direction: Direction, final_direction: Direction) -> None:
         rover = Rover(Position(initial_direction, Coordinates(3, 3)))

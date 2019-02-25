@@ -26,6 +26,9 @@ class Position:
     def coordinates(self) -> Coordinates:
         return self._coordinates
 
+    def __repr__(self) -> str:  # pragma: nocover
+        return f'{self.__class__.__name__}({self._direction!r}, {self._coordinates!r})'
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Position):  # pragma: nocover
             return NotImplemented
