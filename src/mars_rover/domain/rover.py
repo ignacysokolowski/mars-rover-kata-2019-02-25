@@ -1,3 +1,4 @@
+from .coordinates import Coordinates
 from .position import Position
 
 
@@ -8,7 +9,7 @@ class RoverOutsideSurface(Exception):
 class Rover:
 
     def __init__(self, position: Position) -> None:
-        if position.coordinates().horizontal() > 5 or position.coordinates().vertical() > 5:
+        if position.coordinates() > Coordinates(5, 5):
             raise RoverOutsideSurface()
         self._position = position
 
