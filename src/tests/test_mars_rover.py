@@ -42,6 +42,8 @@ class MarsRoverApplication:
         self._rover_position = Position(int(horizontal), int(vertical))
 
     def execute(self, command: str) -> None:
+        if command not in ('f', 'b'):
+            raise RuntimeError(f'Unknown command: {command!r}')
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
         if command == 'f':
@@ -98,6 +100,11 @@ class TestMarsRoverApplication:
         with pytest.raises(RuntimeError) as error:
             self.app.execute('f')
         assert str(error.value) == "Can't move, no rover landed yet"
+
+    def test_rejects_unknown_commands(self) -> None:
+        with pytest.raises(RuntimeError) as error:
+            self.app.execute('x')
+        assert str(error.value) == "Unknown command: 'x'"
 
 
 class TestPosition:
