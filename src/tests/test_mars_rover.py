@@ -108,7 +108,7 @@ class East(Direction):
 class West(Direction):
 
     def opposite(self) -> 'Direction':
-        raise NotImplementedError()
+        return Direction.east()
 
     def symbol(self) -> str:
         return 'W'
@@ -280,6 +280,7 @@ class TestMarsRoverApplication:
             ('3 3 S', '3 4 S'),
             ('2 3 S', '2 4 S'),
             ('3 4 E', '2 4 E'),
+            ('3 4 W', '4 4 W'),
         ]
     )
     def test_moves_rover_backward(
