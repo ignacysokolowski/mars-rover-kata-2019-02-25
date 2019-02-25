@@ -30,21 +30,21 @@ class Position:
 class MarsRoverApplication:
 
     def __init__(self) -> None:
-        self._rover_position: Optional[str] = None
+        self._rover_position: Optional[Position] = None
 
     def rover_position(self) -> Optional[str]:
-        return self._rover_position
+        if not self._rover_position:
+            return None
+        return f'{self._rover_position.horizontal()} {self._rover_position.vertical()}'
 
     def land_rover(self, position: str) -> None:
-        self._rover_position = position
+        horizontal, vertical = position.split()
+        self._rover_position = Position(int(horizontal), int(vertical))
 
     def execute(self, command: str) -> None:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
-        horizontal, vertical = self._rover_position.split()
-        position = Position(int(horizontal), int(vertical))
-        new_position = position.moved_vertically()
-        self._rover_position = f'{new_position.horizontal()} {new_position.vertical()}'
+        self._rover_position = self._rover_position.moved_vertically()
 
 
 class TestMarsRoverApplication:
