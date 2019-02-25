@@ -46,7 +46,7 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        match = re.match(r'^(\d+) (\d+)', rover_position)
+        match = re.match(r'^(\d+) (\d+) N$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
         return cls(Coordinates(int(match.group(1)), int(match.group(2))))
@@ -75,7 +75,15 @@ class TestMarsRoverApplication:
         app = self.land_rover_with_position('3 4 N')
         assert app.rover_position() == '3 4 N'
 
-    @pytest.mark.parametrize('position', ['34 N', 'a 4 N', '4 a N'])
+    @pytest.mark.parametrize(
+        'position', [
+            '34 N',
+            'a 4 N',
+            '4 a N',
+            '3 4 5',
+            '3 4 NS',
+        ]
+    )
     def test_rejects_invalid_initial_position(self, position: str) -> None:
         with pytest.raises(ValueError) as error:
             self.land_rover_with_position(position)
