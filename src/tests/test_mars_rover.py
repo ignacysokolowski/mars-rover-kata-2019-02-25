@@ -159,6 +159,9 @@ class Rover:
     def move_backward(self) -> None:
         self._coordinates = self._coordinates.moved_in(self._direction.opposite())
 
+    def turn_right(self) -> None:
+        self._direction = Direction.east()
+
     def coordinates(self) -> Coordinates:
         return self._coordinates
 
@@ -205,6 +208,8 @@ class MarsRoverApplication:
             self._rover.move_forward()
         elif command == 'b':
             self._rover.move_backward()
+        elif command == 'r':
+            self._rover.turn_right()
         else:
             raise UserInputError.unknown_command(command)
 
@@ -291,6 +296,11 @@ class TestMarsRoverApplication:
         app = self.land_rover_with_position(initial_position)
         app.execute('b')
         assert app.rover_position() == final_position
+
+    def test_turns_rover_right(self) -> None:
+        app = self.land_rover_with_position('3 4 N')
+        app.execute('r')
+        assert app.rover_position() == '3 4 E'
 
     def test_rejects_unknown_commands(self) -> None:
         app = self.land_rover_with_position('3 4 N')
