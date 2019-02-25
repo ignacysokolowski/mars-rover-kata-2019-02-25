@@ -52,6 +52,16 @@ class Direction(abc.ABC):
     def opposite(self) -> 'Direction':
         ...
 
+    def next_to_the_right(self) -> 'Direction':
+        if self == Direction.north():
+            return Direction.east()
+        elif self == Direction.east():
+            return Direction.south()
+        elif self == Direction.south():
+            return Direction.west()
+        else:
+            return Direction.north()
+
     @abc.abstractmethod
     def symbol(self) -> str:
         ...
@@ -160,14 +170,7 @@ class Rover:
         self._coordinates = self._coordinates.moved_in(self._direction.opposite())
 
     def turn_right(self) -> None:
-        if self._direction == Direction.north():
-            self._direction = Direction.east()
-        elif self._direction == Direction.east():
-            self._direction = Direction.south()
-        elif self._direction == Direction.south():
-            self._direction = Direction.west()
-        else:
-            self._direction = Direction.north()
+        self._direction = self._direction.next_to_the_right()
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
