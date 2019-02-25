@@ -29,6 +29,13 @@ class PositionFormat:
             raise UserInputError.invalid_position(user_input)
         return Position(direction, Coordinates(int(match.group(1)), int(match.group(2))))
 
+    def output_from(self, position: Position) -> str:
+        return (
+            f'{position.coordinates().horizontal()} '
+            f'{position.coordinates().vertical()} '
+            f'{position.direction().symbol()}'
+        )
+
 
 class MarsRoverApplication:
 
@@ -40,11 +47,7 @@ class MarsRoverApplication:
         self._rover = Rover(position)
 
     def rover_position(self) -> str:
-        return (
-            f'{self._rover.position().coordinates().horizontal()} '
-            f'{self._rover.position().coordinates().vertical()} '
-            f'{self._rover.position().direction().symbol()}'
-        )
+        return PositionFormat().output_from(self._rover.position())
 
     def execute(self, command: str) -> None:
         if command == 'f':
