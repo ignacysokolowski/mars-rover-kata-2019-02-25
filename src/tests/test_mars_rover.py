@@ -45,14 +45,14 @@ class Coordinates:
 
     def moved_in(self, direction: Direction) -> 'Coordinates':
         if direction == Direction.north():
-            return self.moved_north()
+            return self._moved_north()
         else:
-            return self.moved_south()
+            return self._moved_south()
 
-    def moved_north(self) -> 'Coordinates':
+    def _moved_north(self) -> 'Coordinates':
         return self._moved_vertically_by(1)
 
-    def moved_south(self) -> 'Coordinates':
+    def _moved_south(self) -> 'Coordinates':
         return self._moved_vertically_by(-1)
 
     def _moved_vertically_by(self, points: int) -> 'Coordinates':
@@ -84,9 +84,9 @@ class Rover:
 
     def move_backward(self) -> None:
         if self._direction == Direction.north():
-            self._coordinates = self._coordinates.moved_south()
+            self._coordinates = self._coordinates.moved_in(Direction.south())
         else:
-            self._coordinates = self._coordinates.moved_north()
+            self._coordinates = self._coordinates.moved_in(Direction.north())
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
