@@ -54,12 +54,12 @@ class MarsRoverApplication:
         return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
 
     def execute(self, command: str) -> None:
-        if command not in ('f', 'b'):
-            raise RuntimeError(f'Unknown command: {command!r}')
         if command == 'f':
             self._rover.move_forward()
-        else:
+        elif command == 'b':
             self._rover.move_backward()
+        else:
+            raise RuntimeError(f'Unknown command: {command!r}')
 
 
 class TestMarsRoverApplication:
