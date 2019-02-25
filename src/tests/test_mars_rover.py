@@ -4,6 +4,19 @@ import re
 import pytest
 
 
+class Step:
+
+    def __init__(self, points_east: int, points_north: int) -> None:
+        self._points_east = points_east
+        self._points_north = points_north
+
+    def points_east(self) -> int:
+        return self._points_east
+
+    def points_north(self) -> int:
+        return self._points_north
+
+
 class Direction(abc.ABC):
 
     @classmethod
@@ -50,6 +63,9 @@ class Direction(abc.ABC):
     @abc.abstractmethod
     def points_east(self) -> int:
         ...
+
+    def step(self) -> Step:
+        return Step(self.points_east(), self.points_north())
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -127,9 +143,12 @@ class Coordinates:
         self._vertical = vertical
 
     def moved_in(self, direction: Direction) -> 'Coordinates':
+        return self._moved_by(direction.step())
+
+    def _moved_by(self, step: Step) -> 'Coordinates':
         return Coordinates(
-            self._horizontal + direction.points_east(),
-            self._vertical + direction.points_north(),
+            self._horizontal + step.points_east(),
+            self._vertical + step.points_north(),
         )
 
     def horizontal(self) -> int:
