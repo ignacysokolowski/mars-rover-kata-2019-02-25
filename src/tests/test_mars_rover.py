@@ -17,12 +17,13 @@ class MarsRoverApplication:
     def execute(self, command: str) -> None:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
-        elif self._rover_position == '3 3':
-            self._rover_position = '3 4'
+        horizontal, vertical = self._rover_position.split()
+        if self._rover_position == '3 3':
+            self._rover_position = f'{horizontal} 4'
         elif self._rover_position == '2 3':
-            self._rover_position = '2 4'
+            self._rover_position = f'{horizontal} 4'
         else:
-            self._rover_position = '3 5'
+            self._rover_position = f'{horizontal} 5'
 
 
 class TestMarsRoverApplication:
