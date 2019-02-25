@@ -27,29 +27,41 @@ class Position:
         return self._horizontal == other._horizontal and self._vertical == other._vertical
 
 
+class Rover:
+
+    def __init__(self, position: Position) -> None:
+        self._position = position
+
+    def move_vertically_by(self, points: int) -> None:
+        self._position = self._position.moved_vertically_by(points)
+
+    def position(self) -> Position:
+        return self._position
+
+
 class MarsRoverApplication:
 
     def __init__(self) -> None:
-        self._rover_position: Optional[Position] = None
+        self._rover: Optional[Rover] = None
 
     def rover_position(self) -> Optional[str]:
-        if not self._rover_position:
+        if not self._rover:
             return None
-        return f'{self._rover_position.horizontal()} {self._rover_position.vertical()}'
+        return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
 
     def land_rover(self, position: str) -> None:
         horizontal, vertical = position.split()
-        self._rover_position = Position(int(horizontal), int(vertical))
+        self._rover = Rover(Position(int(horizontal), int(vertical)))
 
     def execute(self, command: str) -> None:
         if command not in ('f', 'b'):
             raise RuntimeError(f'Unknown command: {command!r}')
-        if not self._rover_position:
+        if not self._rover:
             raise RuntimeError("Can't move, no rover landed yet")
         if command == 'f':
-            self._rover_position = self._rover_position.moved_vertically_by(1)
+            self._rover.move_vertically_by(1)
         else:
-            self._rover_position = self._rover_position.moved_vertically_by(-1)
+            self._rover.move_vertically_by(-1)
 
 
 class TestMarsRoverApplication:
