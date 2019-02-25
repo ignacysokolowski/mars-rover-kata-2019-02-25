@@ -23,7 +23,10 @@ class Rover:
         self._position = new_position
 
     def move_backward(self) -> None:
-        self._position = self._position.moved_backward()
+        new_position = self._position.moved_backward()
+        if self._outside_the_surface(new_position):
+            return
+        self._position = new_position
 
     def turn_right(self) -> None:
         self._position = self._position.turned_right()
