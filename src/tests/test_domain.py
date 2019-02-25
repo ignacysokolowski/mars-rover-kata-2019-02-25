@@ -18,6 +18,11 @@ class TestCoordinates:
     def test_two_coordinates_with_different_vertical_point(self) -> None:
         assert Coordinates(3, 4) != Coordinates(3, 5)
 
+    def test_coordinates_are_greater_if_at_least_one_dimension_is_bigger(self) -> None:
+        assert Coordinates(3, 6) > Coordinates(4, 5)
+        assert Coordinates(6, 3) > Coordinates(5, 4)
+        assert Coordinates(3, 5) < Coordinates(4, 6)
+
 
 class TestDirection:
 

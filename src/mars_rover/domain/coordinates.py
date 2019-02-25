@@ -1,7 +1,10 @@
+from functools import total_ordering
+
 from .direction import Direction
 from .step import Step
 
 
+@total_ordering
 class Coordinates:
 
     def __init__(self, horizontal: int, vertical: int) -> None:
@@ -36,3 +39,6 @@ class Coordinates:
         if not isinstance(other, Coordinates):  # pragma: nocover
             return NotImplemented
         return self._horizontal == other._horizontal and self._vertical == other._vertical
+
+    def __gt__(self, other: 'Coordinates') -> bool:
+        return self._horizontal > other._horizontal or self._vertical > other._vertical
