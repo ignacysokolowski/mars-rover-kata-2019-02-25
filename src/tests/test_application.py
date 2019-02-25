@@ -46,47 +46,15 @@ class TestMarsRoverApplication:
             self.land_rover_with_position(position)
         assert str(error.value) == 'Invalid position: ' + position
 
-    @pytest.mark.parametrize(
-        ('initial_position', 'final_position'), [
-            ('3 4 N', '3 5 N'),
-            ('3 3 N', '3 4 N'),
-            ('2 3 N', '2 4 N'),
-            ('3 4 S', '3 3 S'),
-            ('3 3 S', '3 2 S'),
-            ('2 3 S', '2 2 S'),
-            ('3 4 E', '4 4 E'),
-            ('3 4 W', '2 4 W'),
-        ]
-    )
-    def test_moves_rover_forward(
-            self,
-            initial_position: str,
-            final_position: str,
-    ) -> None:
-        app = self.land_rover_with_position(initial_position)
+    def test_moves_rover_forward(self) -> None:
+        app = self.land_rover_with_position('3 4 N')
         app.execute('f')
-        assert app.rover_position() == final_position
+        assert app.rover_position() == '3 5 N'
 
-    @pytest.mark.parametrize(
-        ('initial_position', 'final_position'), [
-            ('3 4 N', '3 3 N'),
-            ('3 3 N', '3 2 N'),
-            ('2 3 N', '2 2 N'),
-            ('3 4 S', '3 5 S'),
-            ('3 3 S', '3 4 S'),
-            ('2 3 S', '2 4 S'),
-            ('3 4 E', '2 4 E'),
-            ('3 4 W', '4 4 W'),
-        ]
-    )
-    def test_moves_rover_backward(
-            self,
-            initial_position: str,
-            final_position: str,
-    ) -> None:
-        app = self.land_rover_with_position(initial_position)
+    def test_moves_rover_backward(self) -> None:
+        app = self.land_rover_with_position('3 4 N')
         app.execute('b')
-        assert app.rover_position() == final_position
+        assert app.rover_position() == '3 3 N'
 
     def test_turns_rover_right(self) -> None:
         app = self.land_rover_with_position('3 4 N')
