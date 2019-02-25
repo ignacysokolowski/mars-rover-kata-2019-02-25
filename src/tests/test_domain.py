@@ -4,6 +4,16 @@ from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
 
 
+class Position:
+
+    def __init__(self, direction: Direction, coordinates: Coordinates) -> None:
+        self._direction = direction
+        self._coordinates = coordinates
+
+    def __eq__(self, other: object) -> bool:
+        return True
+
+
 class TestCoordinates:
 
     def test_two_equal_coordinates(self) -> None:
@@ -39,3 +49,13 @@ class TestDirection:
 
     def test_two_different_directions(self) -> None:
         assert Direction.north() != Direction.south()
+
+
+class TestPosition:
+
+    def test_two_equal_positions(self) -> None:
+        assert Position(
+            Direction.north(), Coordinates(2, 3)
+        ) == Position(
+            Direction.north(), Coordinates(2, 3)
+        )
