@@ -5,6 +5,10 @@ import pytest
 
 class Direction:
 
+    @classmethod
+    def for_symbol(cls, symbol: str) -> 'Direction':
+        return Direction(symbol)
+
     def __init__(self, symbol: str) -> None:
         self._symbol = symbol
 
@@ -173,6 +177,15 @@ class TestCoordinates:
 
 
 class TestDirection:
+
+    @pytest.mark.parametrize(
+        'symbol', [
+            'N',
+            'S',
+        ],
+    )
+    def test_can_be_created_from_symbol(self, symbol: str) -> None:
+        assert Direction.for_symbol(symbol) == Direction(symbol)
 
     def test_two_equal_directions(self) -> None:
         assert Direction('N') == Direction('N')
