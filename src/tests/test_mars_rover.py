@@ -46,6 +46,9 @@ class Coordinates:
     def moved_north(self) -> 'Coordinates':
         return self.moved_vertically_by(1)
 
+    def moved_south(self) -> 'Coordinates':
+        return self.moved_vertically_by(-1)
+
     def moved_vertically_by(self, points: int) -> 'Coordinates':
         return Coordinates(self._horizontal, self._vertical + points)
 
@@ -74,7 +77,7 @@ class Rover:
         if self._direction == Direction.north():
             self._coordinates = self._coordinates.moved_north()
         else:
-            self._coordinates = self._coordinates.moved_vertically_by(-1)
+            self._coordinates = self._coordinates.moved_south()
 
     def move_backward(self) -> None:
         if self._direction == Direction.north():
