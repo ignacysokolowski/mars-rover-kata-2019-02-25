@@ -16,7 +16,7 @@ class MarsRoverApplication:
 
     def execute(self, command: str) -> None:
         if not self._rover_position:
-            raise RuntimeError()
+            raise RuntimeError("Can't move, no rover landed yet")
         elif self._rover_position == '3 3':
             self._rover_position = '3 4'
         else:
@@ -51,5 +51,6 @@ class TestMarsRoverApplication:
         assert self.app.rover_position() == final_position
 
     def test_can_not_move_until_the_rover_landed(self) -> None:
-        with pytest.raises(RuntimeError):
+        with pytest.raises(RuntimeError) as error:
             self.app.execute('f')
+        assert str(error.value) == "Can't move, no rover landed yet"
