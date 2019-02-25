@@ -72,6 +72,17 @@ class TestMarsRoverApplication:
         app.execute('f')
         assert app.rover_position() == position
 
+    @pytest.mark.parametrize(
+        'position', [
+            '3 5 N',
+            '5 3 E',
+        ]
+    )
+    def test_does_not_move_forward_outside_the_surface(self, position: str) -> None:
+        app = self.land_rover_with_position(position)
+        app.execute('f')
+        assert app.rover_position() == position
+
     def test_moves_rover_backward(self) -> None:
         app = self.land_rover_with_position('3 4 N')
         app.execute('b')

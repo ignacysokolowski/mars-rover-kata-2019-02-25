@@ -14,7 +14,10 @@ class Rover:
         self._position = position
 
     def move_forward(self) -> None:
-        self._position = self._position.moved_forward()
+        new_position = self._position.moved_forward()
+        if new_position.coordinates() > Coordinates(5, 5):
+            return
+        self._position = new_position
 
     def move_backward(self) -> None:
         self._position = self._position.moved_backward()
