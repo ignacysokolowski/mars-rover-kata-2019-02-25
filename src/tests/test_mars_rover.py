@@ -126,11 +126,20 @@ class TestMarsRoverApplication:
             '34 N',
             'a 4 N',
             '4 a N',
+        ]
+    )
+    def test_rejects_invalid_initial_coordinates(self, position: str) -> None:
+        with pytest.raises(ValueError) as error:
+            self.land_rover_with_position(position)
+        assert str(error.value) == 'Invalid position: ' + position
+
+    @pytest.mark.parametrize(
+        'position', [
             '3 4 5',
             '3 4 NS',
         ]
     )
-    def test_rejects_invalid_initial_position(self, position: str) -> None:
+    def test_rejects_invalid_initial_direction(self, position: str) -> None:
         with pytest.raises(ValueError) as error:
             self.land_rover_with_position(position)
         assert str(error.value) == 'Invalid position: ' + position
