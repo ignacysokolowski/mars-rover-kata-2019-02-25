@@ -81,9 +81,9 @@ class Rover:
 
     def move_backward(self) -> None:
         if self._direction == Direction.north():
-            self._coordinates = self._coordinates.moved_vertically_by(-1)
+            self._coordinates = self._coordinates.moved_south()
         else:
-            self._coordinates = self._coordinates.moved_vertically_by(1)
+            self._coordinates = self._coordinates.moved_north()
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
