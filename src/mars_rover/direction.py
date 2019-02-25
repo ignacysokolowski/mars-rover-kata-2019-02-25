@@ -54,7 +54,7 @@ class Direction(abc.ABC):
     def step(self) -> Step:
         ...
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:  # pragma: nocover
         return f'{self.__class__.__name__}()'
 
     def __eq__(self, other: object) -> bool:
