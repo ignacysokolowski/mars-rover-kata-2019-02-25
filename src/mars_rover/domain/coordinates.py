@@ -12,13 +12,15 @@ class Coordinates:
         return self._moved_by(direction.step())
 
     def _moved_by(self, step: Step) -> 'Coordinates':
-        if self._horizontal == 0 and step.points_east() < 0:
-            return self
-        if self._vertical == 0 and step.points_north() < 0:
-            return self
-        return Coordinates(
+        return self._moved_to(
             self._horizontal + step.points_east(),
             self._vertical + step.points_north(),
+        )
+
+    def _moved_to(self, horizontal: int, vertical: int) -> 'Coordinates':
+        return Coordinates(
+            horizontal if horizontal >= 0 else 0,
+            vertical if vertical >= 0 else 0,
         )
 
     def horizontal(self) -> int:
