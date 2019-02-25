@@ -8,6 +8,9 @@ class Direction:
     def __init__(self, symbol: str) -> None:
         self._symbol = symbol
 
+    def symbol(self) -> str:
+        return self._symbol
+
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self._symbol!r})'
 
@@ -63,9 +66,9 @@ class MarsRoverApplication:
         match = re.match(r'^(\d+) (\d+) ([NS])$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Coordinates(int(match.group(1)), int(match.group(2))), match.group(3))
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))), Direction(match.group(3)))
 
-    def __init__(self, rover_coordinates: Coordinates, rover_direction: str) -> None:
+    def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
         self._rover_direction = rover_direction
         self._rover = Rover(rover_coordinates)
 
@@ -73,7 +76,7 @@ class MarsRoverApplication:
         return (
             f'{self._rover.coordinates().horizontal()} '
             f'{self._rover.coordinates().vertical()} '
-            f'{self._rover_direction}'
+            f'{self._rover_direction.symbol()}'
         )
 
     def execute(self, command: str) -> None:
