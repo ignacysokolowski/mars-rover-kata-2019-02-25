@@ -8,6 +8,12 @@ class Position:
         self._direction = direction
         self._coordinates = coordinates
 
+    def direction(self) -> Direction:
+        return self._direction
+
+    def coordinates(self) -> Coordinates:
+        return self._coordinates
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Position):  # pragma: nocover
             return NotImplemented

@@ -2,6 +2,7 @@ import re
 
 from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
+from mars_rover.domain import Position
 from mars_rover.domain import Rover
 
 
@@ -33,10 +34,11 @@ class MarsRoverApplication:
         self._rover = Rover(rover_coordinates, rover_direction)
 
     def rover_position(self) -> str:
+        position = Position(self._rover.direction(), self._rover.coordinates())
         return (
-            f'{self._rover.coordinates().horizontal()} '
-            f'{self._rover.coordinates().vertical()} '
-            f'{self._rover.direction().symbol()}'
+            f'{position.coordinates().horizontal()} '
+            f'{position.coordinates().vertical()} '
+            f'{position.direction().symbol()}'
         )
 
     def execute(self, command: str) -> None:
