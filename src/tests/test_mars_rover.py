@@ -80,10 +80,14 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        match = re.match(r'^(\d+) (\d+) ([NS])$', rover_position)
+        match = re.match(r'^(\d+) (\d+) ([A-Z])$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Coordinates(int(match.group(1)), int(match.group(2))), Direction.for_symbol(match.group(3)))
+        try:
+            direction = Direction.for_symbol(match.group(3))
+        except ValueError:
+            raise ValueError(f'Invalid position: {rover_position}')
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))), direction)
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
         self._rover_direction = rover_direction
