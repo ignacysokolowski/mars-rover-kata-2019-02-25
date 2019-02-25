@@ -121,8 +121,9 @@ class TestMarsRoverApplication:
         assert str(error.value) == "Can't move, no rover landed yet"
 
     def test_rejects_unknown_commands(self) -> None:
+        app = self.land_rover_with_position('3 4')
         with pytest.raises(RuntimeError) as error:
-            self.app.execute('x')
+            app.execute('x')
         assert str(error.value) == "Unknown command: 'x'"
 
 
