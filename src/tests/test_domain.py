@@ -13,7 +13,7 @@ class Position:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Position):  # pragma: nocover
             return NotImplemented
-        return self._direction == other._direction
+        return self._direction == other._direction and self._coordinates == other._coordinates
 
 
 class TestCoordinates:
@@ -67,4 +67,11 @@ class TestPosition:
             Direction.north(), Coordinates(2, 3)
         ) != Position(
             Direction.south(), Coordinates(2, 3)
+        )
+
+    def test_two_positions_with_differrent_coordinates(self) -> None:
+        assert Position(
+            Direction.north(), Coordinates(2, 3)
+        ) != Position(
+            Direction.north(), Coordinates(3, 4)
         )
