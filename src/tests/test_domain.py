@@ -73,6 +73,7 @@ class TestRover:
     @pytest.mark.parametrize(
         'coordinates', [
             Coordinates(6, 3),
+            Coordinates(7, 3),
         ],
         ids=repr
     )
