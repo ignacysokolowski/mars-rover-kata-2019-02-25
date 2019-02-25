@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 
 
@@ -44,23 +42,16 @@ class Rover:
 
 class MarsRoverApplication:
 
-    def __init__(self) -> None:
-        self._rover: Optional[Rover] = None
-
-    def rover_position(self) -> Optional[str]:
-        if not self._rover:
-            return None
-        return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
-
-    def land_rover(self, position: str) -> None:
+    def __init__(self, position: str) -> None:
         horizontal, vertical = position.split()
         self._rover = Rover(Position(int(horizontal), int(vertical)))
+
+    def rover_position(self) -> str:
+        return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
 
     def execute(self, command: str) -> None:
         if command not in ('f', 'b'):
             raise RuntimeError(f'Unknown command: {command!r}')
-        if not self._rover:
-            raise RuntimeError("Can't move, no rover landed yet")
         if command == 'f':
             self._rover.move_forward()
         else:
@@ -70,13 +61,7 @@ class MarsRoverApplication:
 class TestMarsRoverApplication:
 
     def land_rover_with_position(self, position: str) -> MarsRoverApplication:
-        app = MarsRoverApplication()
-        app.land_rover(position)
-        return app
-
-    def test_reports_no_rover_position_before_the_rover_landed(self) -> None:
-        app = MarsRoverApplication()
-        assert app.rover_position() is None
+        return MarsRoverApplication(position)
 
     def test_lands_rover_with_the_given_position(self) -> None:
         app = self.land_rover_with_position('3 4')
@@ -113,12 +98,6 @@ class TestMarsRoverApplication:
         app = self.land_rover_with_position(initial_position)
         app.execute('b')
         assert app.rover_position() == final_position
-
-    def test_can_not_move_until_the_rover_landed(self) -> None:
-        app = MarsRoverApplication()
-        with pytest.raises(RuntimeError) as error:
-            app.execute('f')
-        assert str(error.value) == "Can't move, no rover landed yet"
 
     def test_rejects_unknown_commands(self) -> None:
         app = self.land_rover_with_position('3 4')
