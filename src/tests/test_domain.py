@@ -81,3 +81,16 @@ class TestRover:
         rover = Rover(Position(initial_direction, Coordinates(3, 3)))
         rover.turn_right()
         assert rover.position() == Position(final_direction, Coordinates(3, 3))
+
+    @pytest.mark.parametrize(
+        ('initial_direction', 'final_direction'), [
+            (Direction.north(), Direction.west()),
+            (Direction.west(), Direction.south()),
+            (Direction.south(), Direction.east()),
+            (Direction.east(), Direction.north()),
+        ]
+    )
+    def test_turns_left(self, initial_direction: Direction, final_direction: Direction) -> None:
+        rover = Rover(Position(initial_direction, Coordinates(3, 3)))
+        rover.turn_left()
+        assert rover.position() == Position(final_direction, Coordinates(3, 3))
