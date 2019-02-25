@@ -7,7 +7,10 @@ class Direction:
 
     @classmethod
     def for_symbol(cls, symbol: str) -> 'Direction':
-        return Direction(symbol)
+        if symbol == 'N':
+            return cls.north()
+        else:
+            return cls.south()
 
     @classmethod
     def north(cls) -> 'Direction':
