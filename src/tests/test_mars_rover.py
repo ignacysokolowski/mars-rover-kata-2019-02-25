@@ -18,10 +18,7 @@ class MarsRoverApplication:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
         horizontal, vertical = self._rover_position.split()
-        if vertical == '3':
-            self._rover_position = f'{horizontal} 4'
-        else:
-            self._rover_position = f'{horizontal} 5'
+        self._rover_position = f'{horizontal} {int(vertical) + 1}'
 
 
 class TestMarsRoverApplication:
