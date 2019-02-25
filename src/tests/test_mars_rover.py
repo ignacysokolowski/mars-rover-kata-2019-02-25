@@ -76,17 +76,21 @@ class Rover:
         return self._coordinates
 
 
+class UserInputError(Exception):
+    pass
+
+
 class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
         match = re.match(r'^(\d+) (\d+) ([A-Z])$', rover_position)
         if not match:
-            raise ValueError(f'Invalid position: {rover_position}')
+            raise UserInputError(f'Invalid position: {rover_position}')
         try:
             direction = Direction.for_symbol(match.group(3))
         except ValueError:
-            raise ValueError(f'Invalid position: {rover_position}')
+            raise UserInputError(f'Invalid position: {rover_position}')
         return cls(Coordinates(int(match.group(1)), int(match.group(2))), direction)
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
@@ -106,7 +110,7 @@ class MarsRoverApplication:
         elif command == 'b':
             self._rover.move_backward()
         else:
-            raise ValueError(f'Unknown command: {command!r}')
+            raise UserInputError(f'Unknown command: {command!r}')
 
 
 class TestMarsRoverApplication:
@@ -133,7 +137,7 @@ class TestMarsRoverApplication:
         ]
     )
     def test_rejects_invalid_initial_coordinates(self, position: str) -> None:
-        with pytest.raises(ValueError) as error:
+        with pytest.raises(UserInputError) as error:
             self.land_rover_with_position(position)
         assert str(error.value) == 'Invalid position: ' + position
 
@@ -144,7 +148,7 @@ class TestMarsRoverApplication:
         ]
     )
     def test_rejects_invalid_initial_direction(self, position: str) -> None:
-        with pytest.raises(ValueError) as error:
+        with pytest.raises(UserInputError) as error:
             self.land_rover_with_position(position)
         assert str(error.value) == 'Invalid position: ' + position
 
@@ -182,7 +186,7 @@ class TestMarsRoverApplication:
 
     def test_rejects_unknown_commands(self) -> None:
         app = self.land_rover_with_position('3 4 N')
-        with pytest.raises(ValueError) as error:
+        with pytest.raises(UserInputError) as error:
             app.execute('x')
         assert str(error.value) == "Unknown command: 'x'"
 
