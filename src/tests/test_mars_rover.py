@@ -12,7 +12,9 @@ class Direction:
         return f'{self.__class__.__name__}({self._symbol!r})'
 
     def __eq__(self, other: object) -> bool:
-        return True
+        if not isinstance(other, Direction):  # pragma: nocover
+            return NotImplemented
+        return self._symbol == other._symbol
 
 
 class Coordinates:
@@ -171,3 +173,6 @@ class TestDirection:
 
     def test_two_equal_directions(self) -> None:
         assert Direction('N') == Direction('N')
+
+    def test_two_different_directions(self) -> None:
+        assert Direction('N') != Direction('S')
