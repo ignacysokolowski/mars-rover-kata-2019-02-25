@@ -106,7 +106,7 @@ class MarsRoverApplication:
         elif command == 'b':
             self._rover.move_backward()
         else:
-            raise RuntimeError(f'Unknown command: {command!r}')
+            raise ValueError(f'Unknown command: {command!r}')
 
 
 class TestMarsRoverApplication:
@@ -182,7 +182,7 @@ class TestMarsRoverApplication:
 
     def test_rejects_unknown_commands(self) -> None:
         app = self.land_rover_with_position('3 4 N')
-        with pytest.raises(RuntimeError) as error:
+        with pytest.raises(ValueError) as error:
             app.execute('x')
         assert str(error.value) == "Unknown command: 'x'"
 
