@@ -74,6 +74,8 @@ class TestRover:
         'coordinates', [
             Coordinates(6, 3),
             Coordinates(7, 3),
+            Coordinates(3, 6),
+            Coordinates(3, 7),
         ],
         ids=repr
     )
