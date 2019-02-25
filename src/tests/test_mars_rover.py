@@ -164,8 +164,10 @@ class Rover:
             self._direction = Direction.east()
         elif self._direction == Direction.east():
             self._direction = Direction.south()
-        else:
+        elif self._direction == Direction.south():
             self._direction = Direction.west()
+        else:
+            self._direction = Direction.north()
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
@@ -307,6 +309,7 @@ class TestMarsRoverApplication:
             ('N', 'E'),
             ('E', 'S'),
             ('S', 'W'),
+            ('W', 'N'),
         ]
     )
     def test_turns_rover_right(self, initial_direction: str, final_direction: str) -> None:
