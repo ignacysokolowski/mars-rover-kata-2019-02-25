@@ -1,5 +1,7 @@
 from typing import Optional
 
+import pytest
+
 
 class MarsRoverApplication:
 
@@ -28,7 +30,16 @@ class TestMarsRoverApplication:
         self.app.land_rover('3 4')
         assert self.app.rover_position() == '3 4'
 
-    def test_moves_rover_forward_north(self) -> None:
-        self.app.land_rover('3 4')
+    @pytest.mark.parametrize(
+        ('initial_position', 'final_position'), [
+            ('3 4', '3 5'),
+        ]
+    )
+    def test_moves_rover_forward_north(
+            self,
+            initial_position: str,
+            final_position: str,
+    ) -> None:
+        self.app.land_rover(initial_position)
         self.app.execute('f')
-        assert self.app.rover_position() == '3 5'
+        assert self.app.rover_position() == final_position
