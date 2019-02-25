@@ -41,6 +41,10 @@ class Direction(abc.ABC):
     def points_north(self) -> int:
         ...
 
+    @abc.abstractmethod
+    def points_east(self) -> int:
+        ...
+
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
 
@@ -61,6 +65,9 @@ class North(Direction):
     def points_north(self) -> int:
         return 1
 
+    def points_east(self) -> int:
+        return 0
+
 
 class South(Direction):
 
@@ -73,6 +80,9 @@ class South(Direction):
     def points_north(self) -> int:
         return -1
 
+    def points_east(self) -> int:
+        return 0
+
 
 class East(Direction):
 
@@ -83,7 +93,10 @@ class East(Direction):
         return 'E'
 
     def points_north(self) -> int:
-        raise NotImplementedError()
+        return 0
+
+    def points_east(self) -> int:
+        return 1
 
 
 class Coordinates:
@@ -93,7 +106,10 @@ class Coordinates:
         self._vertical = vertical
 
     def moved_in(self, direction: Direction) -> 'Coordinates':
-        return Coordinates(self._horizontal, self._vertical + direction.points_north())
+        return Coordinates(
+            self._horizontal + direction.points_east(),
+            self._vertical + direction.points_north(),
+        )
 
     def horizontal(self) -> int:
         return self._horizontal
@@ -220,6 +236,7 @@ class TestMarsRoverApplication:
             ('3 4 S', '3 3 S'),
             ('3 3 S', '3 2 S'),
             ('2 3 S', '2 2 S'),
+            ('3 4 E', '4 4 E'),
         ]
     )
     def test_moves_rover_forward(
