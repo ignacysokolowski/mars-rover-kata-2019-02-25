@@ -57,15 +57,8 @@ class Direction(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def points_north(self) -> int:
-        ...
-
-    @abc.abstractmethod
-    def points_east(self) -> int:
-        ...
-
     def step(self) -> Step:
-        return Step(self.points_east(), self.points_north())
+        ...
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -84,11 +77,8 @@ class North(Direction):
     def symbol(self) -> str:
         return 'N'
 
-    def points_north(self) -> int:
-        return 1
-
-    def points_east(self) -> int:
-        return 0
+    def step(self) -> Step:
+        return Step(0, 1)
 
 
 class South(Direction):
@@ -99,11 +89,8 @@ class South(Direction):
     def symbol(self) -> str:
         return 'S'
 
-    def points_north(self) -> int:
-        return -1
-
-    def points_east(self) -> int:
-        return 0
+    def step(self) -> Step:
+        return Step(0, -1)
 
 
 class East(Direction):
@@ -114,11 +101,8 @@ class East(Direction):
     def symbol(self) -> str:
         return 'E'
 
-    def points_north(self) -> int:
-        return 0
-
-    def points_east(self) -> int:
-        return 1
+    def step(self) -> Step:
+        return Step(1, 0)
 
 
 class West(Direction):
@@ -129,11 +113,8 @@ class West(Direction):
     def symbol(self) -> str:
         return 'W'
 
-    def points_north(self) -> int:
-        return 0
-
-    def points_east(self) -> int:
-        return -1
+    def step(self) -> Step:
+        return Step(-1, 0)
 
 
 class Coordinates:
