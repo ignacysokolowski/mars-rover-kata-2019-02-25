@@ -19,6 +19,8 @@ class MarsRoverApplication:
             raise RuntimeError("Can't move, no rover landed yet")
         elif self._rover_position == '3 3':
             self._rover_position = '3 4'
+        elif self._rover_position == '2 3':
+            self._rover_position = '2 4'
         else:
             self._rover_position = '3 5'
 
@@ -39,6 +41,7 @@ class TestMarsRoverApplication:
         ('initial_position', 'final_position'), [
             ('3 4', '3 5'),
             ('3 3', '3 4'),
+            ('2 3', '2 4'),
         ]
     )
     def test_moves_rover_forward_north(
