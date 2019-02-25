@@ -77,7 +77,10 @@ class Rover:
 
 
 class UserInputError(Exception):
-    pass
+
+    @classmethod
+    def invalid_position(cls, position: str) -> 'UserInputError':
+        return cls(f'Invalid position: {position}')
 
 
 class MarsRoverApplication:
@@ -86,11 +89,11 @@ class MarsRoverApplication:
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
         match = re.match(r'^(\d+) (\d+) ([A-Z])$', rover_position)
         if not match:
-            raise UserInputError(f'Invalid position: {rover_position}')
+            raise UserInputError.invalid_position(rover_position)
         try:
             direction = Direction.for_symbol(match.group(3))
         except ValueError:
-            raise UserInputError(f'Invalid position: {rover_position}')
+            raise UserInputError.invalid_position(rover_position)
         return cls(Coordinates(int(match.group(1)), int(match.group(2))), direction)
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
