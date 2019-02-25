@@ -10,8 +10,12 @@ class RoverOutsideSurface(Exception):
 
 class Surface(Container[Coordinates]):
 
-    def __init__(self) -> None:
-        self._north_east = Coordinates(5, 5)
+    @classmethod
+    def of_size(cls, size: int) -> 'Surface':
+        return cls(size)
+
+    def __init__(self, size: int) -> None:
+        self._north_east = Coordinates(size, size)
         self._south_west = Coordinates(0, 0)
 
     def __contains__(self, coordinates: object) -> bool:
@@ -23,7 +27,7 @@ class Surface(Container[Coordinates]):
 class Rover:
 
     def __init__(self, position: Position) -> None:
-        self._surface = Surface()
+        self._surface = Surface.of_size(5)
         if self._outside_the_surface(position):
             raise RoverOutsideSurface()
         self._position = position
