@@ -1,12 +1,13 @@
 from .coordinates import Coordinates
 from .direction import Direction
+from .position import Position
 
 
 class Rover:
 
-    def __init__(self, coordinates: Coordinates, direction: Direction) -> None:
-        self._coordinates = coordinates
-        self._direction = direction
+    def __init__(self, position: Position) -> None:
+        self._coordinates = position.coordinates()
+        self._direction = position.direction()
 
     def move_forward(self) -> None:
         self._coordinates = self._coordinates.moved_in(self._direction)

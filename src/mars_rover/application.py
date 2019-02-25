@@ -28,11 +28,10 @@ class MarsRoverApplication:
             direction = Direction.for_symbol(match.group(3))
         except ValueError:
             raise UserInputError.invalid_position(rover_position)
-        position = Position(direction, Coordinates(int(match.group(1)), int(match.group(2))))
-        return cls(position.coordinates(), position.direction())
+        return cls(Position(direction, Coordinates(int(match.group(1)), int(match.group(2)))))
 
-    def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
-        self._rover = Rover(rover_coordinates, rover_direction)
+    def __init__(self, position: Position) -> None:
+        self._rover = Rover(position)
 
     def rover_position(self) -> str:
         position = Position(self._rover.direction(), self._rover.coordinates())
