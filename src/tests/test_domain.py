@@ -2,18 +2,7 @@ import pytest
 
 from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
-
-
-class Position:
-
-    def __init__(self, direction: Direction, coordinates: Coordinates) -> None:
-        self._direction = direction
-        self._coordinates = coordinates
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Position):  # pragma: nocover
-            return NotImplemented
-        return self._direction == other._direction and self._coordinates == other._coordinates
+from mars_rover.domain import Position
 
 
 class TestCoordinates:
