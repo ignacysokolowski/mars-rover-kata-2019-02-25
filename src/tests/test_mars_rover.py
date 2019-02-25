@@ -44,12 +44,12 @@ class Coordinates:
         self._vertical = vertical
 
     def moved_north(self) -> 'Coordinates':
-        return self.moved_vertically_by(1)
+        return self._moved_vertically_by(1)
 
     def moved_south(self) -> 'Coordinates':
-        return self.moved_vertically_by(-1)
+        return self._moved_vertically_by(-1)
 
-    def moved_vertically_by(self, points: int) -> 'Coordinates':
+    def _moved_vertically_by(self, points: int) -> 'Coordinates':
         return Coordinates(self._horizontal, self._vertical + points)
 
     def horizontal(self) -> int:
@@ -229,9 +229,6 @@ class TestCoordinates:
 
     def test_two_coordinates_with_different_vertical_point(self) -> None:
         assert Coordinates(3, 4) != Coordinates(3, 5)
-
-    def test_coordinates_moved_vertically(self) -> None:
-        assert Coordinates(3, 4).moved_vertically_by(1) == Coordinates(3, 5)
 
 
 class TestDirection:
