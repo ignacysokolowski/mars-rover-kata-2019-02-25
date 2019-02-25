@@ -17,13 +17,12 @@ class Rover:
         return position.coordinates() > Coordinates(5, 5)
 
     def move_forward(self) -> None:
-        new_position = self._position.moved_forward()
-        if self._outside_the_surface(new_position):
-            return
-        self._position = new_position
+        self._move_to(self._position.moved_forward())
 
     def move_backward(self) -> None:
-        new_position = self._position.moved_backward()
+        self._move_to(self._position.moved_backward())
+
+    def _move_to(self, new_position: Position) -> None:
         if self._outside_the_surface(new_position):
             return
         self._position = new_position
