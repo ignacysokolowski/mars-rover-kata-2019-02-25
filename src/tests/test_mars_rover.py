@@ -15,11 +15,12 @@ class MarsRoverApplication:
 
 class TestMarsRoverApplication:
 
+    def setup_method(self) -> None:
+        self.app = MarsRoverApplication()
+
     def test_reports_no_rover_position_before_the_rover_landed(self) -> None:
-        app = MarsRoverApplication()
-        assert app.rover_position() is None
+        assert self.app.rover_position() is None
 
     def test_lands_rover_with_the_given_position(self) -> None:
-        app = MarsRoverApplication()
-        app.land_rover('3 4')
-        assert app.rover_position() == '3 4'
+        self.app.land_rover('3 4')
+        assert self.app.rover_position() == '3 4'
