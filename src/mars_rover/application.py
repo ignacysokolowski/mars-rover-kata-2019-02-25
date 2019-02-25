@@ -25,13 +25,13 @@ class PositionFormat:
         if not match:
             raise UserInputError.invalid_position(user_input)
         try:
-            direction = Direction.for_symbol(match.group(3))
+            direction = Direction.for_symbol(match.group('direction'))
         except ValueError:
             raise UserInputError.invalid_position(user_input)
         return Position(direction, Coordinates(int(match.group(1)), int(match.group(2))))
 
     def _pattern(self) -> Pattern:
-        return re.compile(r'^(\d+) (\d+) ([A-Z])$')
+        return re.compile(r'^(\d+) (\d+) (?P<direction>[A-Z])$')
 
     def output_from(self, position: Position) -> str:
         return (
