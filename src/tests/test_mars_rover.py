@@ -53,10 +53,7 @@ class Direction(abc.ABC):
         ...
 
     def next_to_the_right(self) -> 'Direction':
-        if self == Direction.east():
-            return Direction.south()
-        else:
-            return Direction.north()
+        return Direction.north()
 
     @abc.abstractmethod
     def symbol(self) -> str:
@@ -109,6 +106,9 @@ class East(Direction):
 
     def opposite(self) -> 'Direction':
         return Direction.west()
+
+    def next_to_the_right(self) -> 'Direction':
+        return Direction.south()
 
     def symbol(self) -> str:
         return 'E'
