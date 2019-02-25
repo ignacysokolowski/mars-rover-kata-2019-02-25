@@ -44,7 +44,10 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        horizontal, vertical = rover_position.split()
+        try:
+            horizontal, vertical = rover_position.split()
+        except ValueError:
+            raise ValueError(f'Invalid position: {rover_position}')
         return cls(Position(int(horizontal), int(vertical)))
 
     def __init__(self, rover_position: Position) -> None:
@@ -70,6 +73,11 @@ class TestMarsRoverApplication:
     def test_lands_rover_with_the_given_position(self) -> None:
         app = self.land_rover_with_position('3 4')
         assert app.rover_position() == '3 4'
+
+    def test_rejects_invalid_initial_position(self) -> None:
+        with pytest.raises(ValueError) as error:
+            self.land_rover_with_position('34')
+        assert str(error.value) == 'Invalid position: 34'
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
