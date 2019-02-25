@@ -35,16 +35,16 @@ class TestMarsRoverApplication:
         assert str(error.value) == 'Invalid position: ' + position
 
     @pytest.mark.parametrize(
-        'position', [
-            '3 4 5',
-            '3 4 NS',
-            '3 4 A',
+        'direction', [
+            '5',
+            'NS',
+            'A',
         ]
     )
-    def test_rejects_invalid_initial_direction(self, position: str) -> None:
+    def test_rejects_invalid_initial_direction(self, direction: str) -> None:
         with pytest.raises(UserInputError) as error:
-            self.land_rover_with_position(position)
-        assert str(error.value) == 'Invalid position: ' + position
+            self.land_rover_with_position('3 4 ' + direction)
+        assert str(error.value) == 'Invalid position: 3 4 ' + direction
 
     def test_moves_rover_forward(self) -> None:
         app = self.land_rover_with_position('3 4 N')
