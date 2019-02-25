@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 
@@ -44,11 +46,10 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        try:
-            horizontal, vertical = rover_position.split()
-        except ValueError:
+        match = re.match(r'^(\d+) (\d+)$', rover_position)
+        if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Position(int(horizontal), int(vertical)))
+        return cls(Position(int(match.group(1)), int(match.group(2))))
 
     def __init__(self, rover_position: Position) -> None:
         self._rover = Rover(rover_position)
@@ -74,10 +75,11 @@ class TestMarsRoverApplication:
         app = self.land_rover_with_position('3 4')
         assert app.rover_position() == '3 4'
 
-    def test_rejects_invalid_initial_position(self) -> None:
+    @pytest.mark.parametrize('position', ['34', 'a 4', '4 a'])
+    def test_rejects_invalid_initial_position(self, position: str) -> None:
         with pytest.raises(ValueError) as error:
-            self.land_rover_with_position('34')
-        assert str(error.value) == 'Invalid position: 34'
+            self.land_rover_with_position(position)
+        assert str(error.value) == 'Invalid position: ' + position
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
