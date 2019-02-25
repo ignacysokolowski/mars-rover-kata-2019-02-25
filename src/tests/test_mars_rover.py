@@ -49,13 +49,18 @@ class MarsRoverApplication:
         match = re.match(r'^(\d+) (\d+) N$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Coordinates(int(match.group(1)), int(match.group(2))))
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))), 'N')
 
-    def __init__(self, rover_coordinates: Coordinates) -> None:
+    def __init__(self, rover_coordinates: Coordinates, rover_direction: str) -> None:
+        self._rover_direction = rover_direction
         self._rover = Rover(rover_coordinates)
 
     def rover_position(self) -> str:
-        return f'{self._rover.coordinates().horizontal()} {self._rover.coordinates().vertical()} N'
+        return (
+            f'{self._rover.coordinates().horizontal()} '
+            f'{self._rover.coordinates().vertical()} '
+            f'{self._rover_direction}'
+        )
 
     def execute(self, command: str) -> None:
         if command == 'f':
