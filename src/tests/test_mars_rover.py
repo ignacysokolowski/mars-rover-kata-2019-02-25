@@ -70,7 +70,7 @@ class MarsRoverApplication:
         match = re.match(r'^(\d+) (\d+) ([NS])$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Coordinates(int(match.group(1)), int(match.group(2))), Direction(match.group(3)))
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))), Direction.for_symbol(match.group(3)))
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
         self._rover_direction = rover_direction
@@ -188,7 +188,7 @@ class TestDirection:
         assert Direction.for_symbol(symbol) == Direction(symbol)
 
     def test_two_equal_directions(self) -> None:
-        assert Direction('N') == Direction('N')
+        assert Direction.for_symbol('N') == Direction.for_symbol('N')
 
     def test_two_different_directions(self) -> None:
-        assert Direction('N') != Direction('S')
+        assert Direction.for_symbol('N') != Direction.for_symbol('S')
