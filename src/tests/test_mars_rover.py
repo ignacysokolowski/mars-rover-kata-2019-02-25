@@ -72,11 +72,14 @@ class TestMarsRoverApplication:
     def setup_method(self) -> None:
         self.app = MarsRoverApplication()
 
+    def land_rover_with_position(self, position: str) -> None:
+        self.app.land_rover(position)
+
     def test_reports_no_rover_position_before_the_rover_landed(self) -> None:
         assert self.app.rover_position() is None
 
     def test_lands_rover_with_the_given_position(self) -> None:
-        self.app.land_rover('3 4')
+        self.land_rover_with_position('3 4')
         assert self.app.rover_position() == '3 4'
 
     @pytest.mark.parametrize(
@@ -91,7 +94,7 @@ class TestMarsRoverApplication:
             initial_position: str,
             final_position: str,
     ) -> None:
-        self.app.land_rover(initial_position)
+        self.land_rover_with_position(initial_position)
         self.app.execute('f')
         assert self.app.rover_position() == final_position
 
@@ -107,7 +110,7 @@ class TestMarsRoverApplication:
             initial_position: str,
             final_position: str,
     ) -> None:
-        self.app.land_rover(initial_position)
+        self.land_rover_with_position(initial_position)
         self.app.execute('b')
         assert self.app.rover_position() == final_position
 
