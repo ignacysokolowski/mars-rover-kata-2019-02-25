@@ -46,10 +46,10 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        match = re.match(r'^(\d+) (\d+) N$', rover_position)
+        match = re.match(r'^(\d+) (\d+) ([NS])$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Coordinates(int(match.group(1)), int(match.group(2))), 'N')
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))), match.group(3))
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: str) -> None:
         self._rover_direction = rover_direction
@@ -76,9 +76,16 @@ class TestMarsRoverApplication:
     def land_rover_with_position(self, position: str) -> MarsRoverApplication:
         return MarsRoverApplication.landing_with(position)
 
-    def test_lands_rover_at_given_coordinates_and_facing_direction(self) -> None:
-        app = self.land_rover_with_position('3 4 N')
-        assert app.rover_position() == '3 4 N'
+    @pytest.mark.parametrize(
+        'position', [
+            '3 4 N',
+            '2 3 N',
+            '3 4 S',
+        ]
+    )
+    def test_lands_rover_at_given_coordinates_and_facing_direction(self, position: str) -> None:
+        app = self.land_rover_with_position(position)
+        assert app.rover_position() == position
 
     @pytest.mark.parametrize(
         'position', [
