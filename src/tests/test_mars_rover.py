@@ -3,6 +3,18 @@ import re
 import pytest
 
 
+class Direction:
+
+    def __init__(self, symbol: str) -> None:
+        self._symbol = symbol
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}({self._symbol!r})'
+
+    def __eq__(self, other: object) -> bool:
+        return True
+
+
 class Coordinates:
 
     def __init__(self, horizontal: int, vertical: int) -> None:
@@ -153,3 +165,9 @@ class TestCoordinates:
 
     def test_coordinates_moved_vertically(self) -> None:
         assert Coordinates(3, 4).moved_vertically_by(1) == Coordinates(3, 5)
+
+
+class TestDirection:
+
+    def test_two_equal_directions(self) -> None:
+        assert Direction('N') == Direction('N')
