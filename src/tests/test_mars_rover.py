@@ -160,7 +160,10 @@ class Rover:
         self._coordinates = self._coordinates.moved_in(self._direction.opposite())
 
     def turn_right(self) -> None:
-        self._direction = Direction.east()
+        if self._direction == Direction.north():
+            self._direction = Direction.east()
+        else:
+            self._direction = Direction.south()
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
@@ -300,6 +303,7 @@ class TestMarsRoverApplication:
     @pytest.mark.parametrize(
         ('initial_direction', 'final_direction'), [
             ('N', 'E'),
+            ('E', 'S'),
         ]
     )
     def test_turns_rover_right(self, initial_direction: str, final_direction: str) -> None:
