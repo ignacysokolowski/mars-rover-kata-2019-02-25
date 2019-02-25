@@ -116,6 +116,18 @@ class TestRover:
         assert rover.position() == Position(direction, final_coordinates)
 
     @pytest.mark.parametrize(
+        'position', [
+            Position(Direction.south(), Coordinates(3, 0)),
+            Position(Direction.west(), Coordinates(0, 3)),
+        ],
+        ids=repr
+    )
+    def test_does_not_move_forward_to_negative_position(self, position: Position) -> None:
+        rover = Rover(position)
+        rover.move_forward()
+        assert rover.position() == position
+
+    @pytest.mark.parametrize(
         ('initial_direction', 'final_direction'), [
             (Direction.north(), Direction.east()),
             (Direction.east(), Direction.south()),
