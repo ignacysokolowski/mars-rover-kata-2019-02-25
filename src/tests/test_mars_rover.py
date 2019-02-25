@@ -68,7 +68,10 @@ class Rover:
         self._direction = direction
 
     def move_forward(self) -> None:
-        self._coordinates = self._coordinates.moved_vertically_by(1)
+        if self._direction == Direction.north():
+            self._coordinates = self._coordinates.moved_vertically_by(1)
+        else:
+            self._coordinates = self._coordinates.moved_vertically_by(-1)
 
     def move_backward(self) -> None:
         self._coordinates = self._coordinates.moved_vertically_by(-1)
@@ -167,9 +170,12 @@ class TestMarsRoverApplication:
             ('3 4 N', '3 5 N'),
             ('3 3 N', '3 4 N'),
             ('2 3 N', '2 4 N'),
+            ('3 4 S', '3 3 S'),
+            ('3 3 S', '3 2 S'),
+            ('2 3 S', '2 2 S'),
         ]
     )
-    def test_moves_rover_forward_north(
+    def test_moves_rover_forward(
             self,
             initial_position: str,
             final_position: str,
