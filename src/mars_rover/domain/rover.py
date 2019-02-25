@@ -6,15 +6,22 @@ class RoverOutsideSurface(Exception):
     pass
 
 
+class Surface:
+
+    def north_east(self) -> Coordinates:
+        return Coordinates(5, 5)
+
+
 class Rover:
 
     def __init__(self, position: Position) -> None:
+        self._surface = Surface()
         if self._outside_the_surface(position):
             raise RoverOutsideSurface()
         self._position = position
 
     def _outside_the_surface(self, position: Position) -> bool:
-        return position.coordinates() > Coordinates(5, 5)
+        return position.coordinates() > self._surface.north_east()
 
     def move_forward(self) -> None:
         self._move_to(self._position.moved_forward())
