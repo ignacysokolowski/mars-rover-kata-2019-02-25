@@ -63,8 +63,9 @@ class Coordinates:
 
 class Rover:
 
-    def __init__(self, coordinates: Coordinates) -> None:
+    def __init__(self, coordinates: Coordinates, direction: Direction) -> None:
         self._coordinates = coordinates
+        self._direction = direction
 
     def move_forward(self) -> None:
         self._coordinates = self._coordinates.moved_vertically_by(1)
@@ -74,6 +75,9 @@ class Rover:
 
     def coordinates(self) -> Coordinates:
         return self._coordinates
+
+    def direction(self) -> Direction:
+        return self._direction
 
 
 class UserInputError(Exception):
@@ -101,14 +105,13 @@ class MarsRoverApplication:
         return cls(Coordinates(int(match.group(1)), int(match.group(2))), direction)
 
     def __init__(self, rover_coordinates: Coordinates, rover_direction: Direction) -> None:
-        self._rover_direction = rover_direction
-        self._rover = Rover(rover_coordinates)
+        self._rover = Rover(rover_coordinates, rover_direction)
 
     def rover_position(self) -> str:
         return (
             f'{self._rover.coordinates().horizontal()} '
             f'{self._rover.coordinates().vertical()} '
-            f'{self._rover_direction.symbol()}'
+            f'{self._rover.direction().symbol()}'
         )
 
     def execute(self, command: str) -> None:
