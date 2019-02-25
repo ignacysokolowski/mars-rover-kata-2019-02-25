@@ -9,6 +9,14 @@ class Direction:
     def for_symbol(cls, symbol: str) -> 'Direction':
         return Direction(symbol)
 
+    @classmethod
+    def north(cls) -> 'Direction':
+        return Direction('N')
+
+    @classmethod
+    def south(cls) -> 'Direction':
+        return Direction('S')
+
     def __init__(self, symbol: str) -> None:
         self._symbol = symbol
 
@@ -179,13 +187,13 @@ class TestCoordinates:
 class TestDirection:
 
     @pytest.mark.parametrize(
-        'symbol', [
-            'N',
-            'S',
+        ('symbol', 'direction'), [
+            ('N', Direction.north()),
+            ('S', Direction.south()),
         ],
     )
-    def test_can_be_created_from_symbol(self, symbol: str) -> None:
-        assert Direction.for_symbol(symbol) == Direction(symbol)
+    def test_can_be_created_from_symbol(self, symbol: str, direction: Direction) -> None:
+        assert Direction.for_symbol(symbol) == direction
 
     def test_two_equal_directions(self) -> None:
         assert Direction.for_symbol('N') == Direction.for_symbol('N')
