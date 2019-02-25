@@ -1,5 +1,3 @@
-from .coordinates import Coordinates
-from .direction import Direction
 from .position import Position
 
 
@@ -21,8 +19,5 @@ class Rover:
     def turn_left(self) -> None:
         self._direction = self._direction.next_to_the_left()
 
-    def coordinates(self) -> Coordinates:
-        return self._coordinates
-
-    def direction(self) -> Direction:
-        return self._direction
+    def position(self) -> Position:
+        return Position(self._direction, self._coordinates)

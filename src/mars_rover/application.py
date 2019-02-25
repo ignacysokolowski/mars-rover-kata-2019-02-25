@@ -34,11 +34,10 @@ class MarsRoverApplication:
         self._rover = Rover(position)
 
     def rover_position(self) -> str:
-        position = Position(self._rover.direction(), self._rover.coordinates())
         return (
-            f'{position.coordinates().horizontal()} '
-            f'{position.coordinates().vertical()} '
-            f'{position.direction().symbol()}'
+            f'{self._rover.position().coordinates().horizontal()} '
+            f'{self._rover.position().coordinates().vertical()} '
+            f'{self._rover.position().direction().symbol()}'
         )
 
     def execute(self, command: str) -> None:
