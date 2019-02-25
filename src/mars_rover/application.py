@@ -15,6 +15,10 @@ class UserInputError(Exception):
         return cls(f'Invalid position: {position}')
 
     @classmethod
+    def invalid_direction(cls, direction: str) -> 'UserInputError':
+        return cls(f'Invalid direction: {direction}')
+
+    @classmethod
     def unknown_command(cls, command: str) -> 'UserInputError':
         return cls(f'Unknown command: {command!r}')
 
@@ -28,14 +32,14 @@ class PositionFormat:
         try:
             direction = Direction.for_symbol(match.group('direction'))
         except ValueError:
-            raise UserInputError.invalid_position(user_input)
+            raise UserInputError.invalid_direction(match.group('direction'))
         return Position(direction, self._coordinates_from(match))
 
     def _pattern(self) -> Pattern:
         return re.compile(
             r'^(?P<horizontal>\d+) '
             r'(?P<vertical>\d+) '
-            r'(?P<direction>[A-Z])$'
+            r'(?P<direction>.*)'
         )
 
     def _coordinates_from(self, match: Match) -> Coordinates:
