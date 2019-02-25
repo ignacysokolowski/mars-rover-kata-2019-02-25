@@ -72,15 +72,16 @@ class TestMarsRoverApplication:
     def setup_method(self) -> None:
         self.app = MarsRoverApplication()
 
-    def land_rover_with_position(self, position: str) -> None:
+    def land_rover_with_position(self, position: str) -> MarsRoverApplication:
         self.app.land_rover(position)
+        return self.app
 
     def test_reports_no_rover_position_before_the_rover_landed(self) -> None:
         assert self.app.rover_position() is None
 
     def test_lands_rover_with_the_given_position(self) -> None:
-        self.land_rover_with_position('3 4')
-        assert self.app.rover_position() == '3 4'
+        app = self.land_rover_with_position('3 4')
+        assert app.rover_position() == '3 4'
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
@@ -94,9 +95,9 @@ class TestMarsRoverApplication:
             initial_position: str,
             final_position: str,
     ) -> None:
-        self.land_rover_with_position(initial_position)
-        self.app.execute('f')
-        assert self.app.rover_position() == final_position
+        app = self.land_rover_with_position(initial_position)
+        app.execute('f')
+        assert app.rover_position() == final_position
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
@@ -110,9 +111,9 @@ class TestMarsRoverApplication:
             initial_position: str,
             final_position: str,
     ) -> None:
-        self.land_rover_with_position(initial_position)
-        self.app.execute('b')
-        assert self.app.rover_position() == final_position
+        app = self.land_rover_with_position(initial_position)
+        app.execute('b')
+        assert app.rover_position() == final_position
 
     def test_can_not_move_until_the_rover_landed(self) -> None:
         with pytest.raises(RuntimeError) as error:
