@@ -9,8 +9,8 @@ class Position:
         self._horizontal = horizontal
         self._vertical = vertical
 
-    def moved_vertically(self) -> 'Position':
-        return Position(self._horizontal, self._vertical + 1)
+    def moved_vertically_by(self, points: int) -> 'Position':
+        return Position(self._horizontal, self._vertical + points)
 
     def horizontal(self) -> int:
         return self._horizontal
@@ -44,7 +44,7 @@ class MarsRoverApplication:
     def execute(self, command: str) -> None:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
-        self._rover_position = self._rover_position.moved_vertically()
+        self._rover_position = self._rover_position.moved_vertically_by(1)
 
 
 class TestMarsRoverApplication:
@@ -93,4 +93,4 @@ class TestPosition:
         assert Position(3, 4) != Position(3, 5)
 
     def test_position_moved_vertically(self) -> None:
-        assert Position(3, 4).moved_vertically() == Position(3, 5)
+        assert Position(3, 4).moved_vertically_by(1) == Position(3, 5)
