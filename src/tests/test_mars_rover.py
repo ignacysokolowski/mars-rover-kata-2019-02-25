@@ -14,6 +14,8 @@ class Direction(abc.ABC):
             return cls.south()
         elif symbol == 'E':
             return cls.east()
+        elif symbol == 'W':
+            return cls.west()
         else:
             raise ValueError(f'Unknown direction: {symbol}')
 
@@ -28,6 +30,10 @@ class Direction(abc.ABC):
     @classmethod
     def east(cls) -> 'Direction':
         return East()
+
+    @classmethod
+    def west(cls) -> 'Direction':
+        return West()
 
     @abc.abstractmethod
     def opposite(self) -> 'Direction':
@@ -97,6 +103,21 @@ class East(Direction):
 
     def points_east(self) -> int:
         return 1
+
+
+class West(Direction):
+
+    def opposite(self) -> 'Direction':
+        raise NotImplementedError()
+
+    def symbol(self) -> str:
+        return 'W'
+
+    def points_north(self) -> int:
+        raise NotImplementedError()
+
+    def points_east(self) -> int:
+        raise NotImplementedError()
 
 
 class Coordinates:
@@ -199,6 +220,7 @@ class TestMarsRoverApplication:
             '2 3 N',
             '3 4 S',
             '3 4 E',
+            '3 4 W',
         ]
     )
     def test_lands_rover_at_given_coordinates_and_facing_direction(self, position: str) -> None:
@@ -293,6 +315,7 @@ class TestDirection:
             ('N', Direction.north()),
             ('S', Direction.south()),
             ('E', Direction.east()),
+            ('W', Direction.west()),
         ],
     )
     def test_can_be_created_from_symbol(self, symbol: str, direction: Direction) -> None:
