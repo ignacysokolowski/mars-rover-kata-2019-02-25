@@ -297,10 +297,15 @@ class TestMarsRoverApplication:
         app.execute('b')
         assert app.rover_position() == final_position
 
-    def test_turns_rover_right(self) -> None:
-        app = self.land_rover_with_position('3 4 N')
+    @pytest.mark.parametrize(
+        ('initial_direction', 'final_direction'), [
+            ('N', 'E'),
+        ]
+    )
+    def test_turns_rover_right(self, initial_direction: str, final_direction: str) -> None:
+        app = self.land_rover_with_position('3 4 ' + initial_direction)
         app.execute('r')
-        assert app.rover_position() == '3 4 E'
+        assert app.rover_position() == '3 4 ' + final_direction
 
     def test_rejects_unknown_commands(self) -> None:
         app = self.land_rover_with_position('3 4 N')
