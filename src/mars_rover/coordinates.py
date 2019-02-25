@@ -1,5 +1,5 @@
-from mars_rover.direction import Direction
-from mars_rover.step import Step
+from .direction import Direction
+from .step import Step
 
 
 class Coordinates:
