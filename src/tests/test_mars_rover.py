@@ -82,6 +82,10 @@ class UserInputError(Exception):
     def invalid_position(cls, position: str) -> 'UserInputError':
         return cls(f'Invalid position: {position}')
 
+    @classmethod
+    def unknown_command(cls, command: str) -> 'UserInputError':
+        return cls(f'Unknown command: {command!r}')
+
 
 class MarsRoverApplication:
 
@@ -113,7 +117,7 @@ class MarsRoverApplication:
         elif command == 'b':
             self._rover.move_backward()
         else:
-            raise UserInputError(f'Unknown command: {command!r}')
+            raise UserInputError.unknown_command(command)
 
 
 class TestMarsRoverApplication:
