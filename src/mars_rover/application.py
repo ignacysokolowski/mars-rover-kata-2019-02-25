@@ -17,18 +17,24 @@ class UserInputError(Exception):
         return cls(f'Unknown command: {command!r}')
 
 
+class PositionParser:
+
+    def position_from(self, user_input: str) -> Position:
+        match = re.match(r'^(\d+) (\d+) ([A-Z])$', user_input)
+        if not match:
+            raise UserInputError.invalid_position(user_input)
+        try:
+            direction = Direction.for_symbol(match.group(3))
+        except ValueError:
+            raise UserInputError.invalid_position(user_input)
+        return Position(direction, Coordinates(int(match.group(1)), int(match.group(2))))
+
+
 class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        match = re.match(r'^(\d+) (\d+) ([A-Z])$', rover_position)
-        if not match:
-            raise UserInputError.invalid_position(rover_position)
-        try:
-            direction = Direction.for_symbol(match.group(3))
-        except ValueError:
-            raise UserInputError.invalid_position(rover_position)
-        return cls(Position(direction, Coordinates(int(match.group(1)), int(match.group(2)))))
+        return cls(PositionParser().position_from(rover_position))
 
     def __init__(self, position: Position) -> None:
         self._rover = Rover(position)
