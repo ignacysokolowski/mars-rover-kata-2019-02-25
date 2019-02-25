@@ -1,8 +1,8 @@
 import re
 
-from mars_rover.coordinates import Coordinates
-from mars_rover.direction import Direction
-from mars_rover.rover import Rover
+from mars_rover.domain import Coordinates
+from mars_rover.domain import Direction
+from mars_rover.domain import Rover
 
 
 class UserInputError(Exception):
