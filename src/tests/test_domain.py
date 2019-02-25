@@ -22,6 +22,8 @@ class TestCoordinates:
         assert Coordinates(3, 6) > Coordinates(4, 5)
         assert Coordinates(6, 3) > Coordinates(5, 4)
         assert Coordinates(3, 5) < Coordinates(4, 6)
+        assert Coordinates(-1, 3) < Coordinates(0, 2)
+        assert Coordinates(3, -1) < Coordinates(2, 0)
 
 
 class TestDirection:

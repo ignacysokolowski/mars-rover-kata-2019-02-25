@@ -1,3 +1,5 @@
+from typing import Container
+
 from .coordinates import Coordinates
 from .position import Position
 
@@ -6,10 +8,16 @@ class RoverOutsideSurface(Exception):
     pass
 
 
-class Surface:
+class Surface(Container[Coordinates]):
 
-    def north_east(self) -> Coordinates:
-        return Coordinates(5, 5)
+    def __init__(self) -> None:
+        self._north_east = Coordinates(5, 5)
+        self._south_west = Coordinates(0, 0)
+
+    def __contains__(self, coordinates: object) -> bool:
+        if not isinstance(coordinates, Coordinates):  # pragma: nocover
+            raise TypeError(coordinates)
+        return not (coordinates > self._north_east or coordinates < self._south_west)
 
 
 class Rover:
@@ -21,7 +29,7 @@ class Rover:
         self._position = position
 
     def _outside_the_surface(self, position: Position) -> bool:
-        return position.coordinates() > self._surface.north_east()
+        return position.coordinates() not in self._surface
 
     def move_forward(self) -> None:
         self._move_to(self._position.moved_forward())
