@@ -43,12 +43,12 @@ class Rover:
 class MarsRoverApplication:
 
     @classmethod
-    def landing_with(cls, position: str) -> 'MarsRoverApplication':
-        horizontal, vertical = position.split()
+    def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
+        horizontal, vertical = rover_position.split()
         return cls(Position(int(horizontal), int(vertical)))
 
-    def __init__(self, position: Position) -> None:
-        self._rover = Rover(position)
+    def __init__(self, rover_position: Position) -> None:
+        self._rover = Rover(rover_position)
 
     def rover_position(self) -> str:
         return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
