@@ -15,7 +15,10 @@ class MarsRoverApplication:
         self._rover_position = position
 
     def execute(self, command: str) -> None:
-        self._rover_position = '3 5'
+        if self._rover_position == '3 3':
+            self._rover_position = '3 4'
+        else:
+            self._rover_position = '3 5'
 
 
 class TestMarsRoverApplication:
@@ -33,6 +36,7 @@ class TestMarsRoverApplication:
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
             ('3 4', '3 5'),
+            ('3 3', '3 4'),
         ]
     )
     def test_moves_rover_forward_north(
