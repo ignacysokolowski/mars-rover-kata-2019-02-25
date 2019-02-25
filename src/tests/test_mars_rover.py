@@ -196,7 +196,7 @@ class TestDirection:
         assert Direction.for_symbol(symbol) == direction
 
     def test_two_equal_directions(self) -> None:
-        assert Direction.for_symbol('N') == Direction.for_symbol('N')
+        assert Direction.north() == Direction.north()
 
     def test_two_different_directions(self) -> None:
-        assert Direction.for_symbol('N') != Direction.for_symbol('S')
+        assert Direction.north() != Direction.south()
