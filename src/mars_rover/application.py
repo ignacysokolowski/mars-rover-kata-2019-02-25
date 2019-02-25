@@ -1,4 +1,5 @@
 import re
+from typing import Pattern
 
 from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
@@ -20,7 +21,7 @@ class UserInputError(Exception):
 class PositionFormat:
 
     def position_from(self, user_input: str) -> Position:
-        match = re.match(r'^(\d+) (\d+) ([A-Z])$', user_input)
+        match = self._pattern().match(user_input)
         if not match:
             raise UserInputError.invalid_position(user_input)
         try:
@@ -28,6 +29,9 @@ class PositionFormat:
         except ValueError:
             raise UserInputError.invalid_position(user_input)
         return Position(direction, Coordinates(int(match.group(1)), int(match.group(2))))
+
+    def _pattern(self) -> Pattern:
+        return re.compile(r'^(\d+) (\d+) ([A-Z])$')
 
     def output_from(self, position: Position) -> str:
         return (
