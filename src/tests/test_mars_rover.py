@@ -15,7 +15,7 @@ class Position:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Position):  # pragma: nocover
             return NotImplemented
-        return self._horizontal == other._horizontal
+        return self._horizontal == other._horizontal and self._vertical == other._vertical
 
 
 class MarsRoverApplication:
@@ -77,3 +77,6 @@ class TestPosition:
 
     def test_two_positions_with_different_horizontal_point(self) -> None:
         assert Position(3, 4) != Position(2, 4)
+
+    def test_two_positions_with_different_vertical_point(self) -> None:
+        assert Position(3, 4) != Position(3, 5)
