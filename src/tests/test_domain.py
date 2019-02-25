@@ -3,6 +3,7 @@ import pytest
 from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
 from mars_rover.domain import Position
+from mars_rover.domain import Rover
 
 
 class TestCoordinates:
@@ -64,3 +65,19 @@ class TestPosition:
         ) != Position(
             Direction.north(), Coordinates(3, 4)
         )
+
+
+class TestRover:
+
+    @pytest.mark.parametrize(
+        ('initial_direction', 'final_direction'), [
+            (Direction.north(), Direction.east()),
+            (Direction.east(), Direction.south()),
+            (Direction.south(), Direction.west()),
+            (Direction.west(), Direction.north()),
+        ]
+    )
+    def test_turns_right(self, initial_direction: Direction, final_direction: Direction) -> None:
+        rover = Rover(Position(initial_direction, Coordinates(3, 3)))
+        rover.turn_right()
+        assert rover.position() == Position(final_direction, Coordinates(3, 3))
