@@ -70,9 +70,15 @@ class TestPosition:
 
 class TestRover:
 
-    def test_can_not_land_outside_of_the_surface(self) -> None:
+    @pytest.mark.parametrize(
+        'coordinates', [
+            Coordinates(6, 3),
+        ],
+        ids=repr
+    )
+    def test_can_not_land_outside_of_the_surface(self, coordinates: Coordinates) -> None:
         with pytest.raises(RoverOutsideSurface):
-            Rover(Position(Direction.north(), Coordinates(6, 3)))
+            Rover(Position(Direction.north(), coordinates))
 
     @pytest.mark.parametrize(
         ('direction', 'initial_coordinates', 'final_coordinates'), [
