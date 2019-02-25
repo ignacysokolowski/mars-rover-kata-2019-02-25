@@ -1,6 +1,10 @@
 from .position import Position
 
 
+class RoverOutsideSurface(Exception):
+    pass
+
+
 class Rover:
 
     def __init__(self, position: Position) -> None:

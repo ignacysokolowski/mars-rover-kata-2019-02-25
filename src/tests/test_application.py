@@ -46,6 +46,16 @@ class TestMarsRoverApplication:
             self.land_rover_with_position('3 4 ' + direction)
         assert str(error.value) == 'Invalid direction: ' + direction
 
+    @pytest.mark.parametrize(
+        'position', [
+            '6 3 N',
+        ]
+    )
+    def test_can_not_land_outside_of_the_surface(self, position: str) -> None:
+        with pytest.raises(UserInputError) as error:
+            self.land_rover_with_position(position)
+        assert str(error.value) == 'Rover outside the surface'
+
     def test_moves_rover_forward(self) -> None:
         app = self.land_rover_with_position('3 4 N')
         app.execute('f')

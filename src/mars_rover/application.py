@@ -6,6 +6,7 @@ from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
 from mars_rover.domain import Position
 from mars_rover.domain import Rover
+from mars_rover.domain import RoverOutsideSurface
 
 
 class UserInputError(Exception):
@@ -21,6 +22,10 @@ class UserInputError(Exception):
     @classmethod
     def unknown_command(cls, command: str) -> 'UserInputError':
         return cls(f'Unknown command: {command!r}')
+
+    @classmethod
+    def rover_outside_surface(cls) -> 'UserInputError':
+        return cls(f'Rover outside the surface')
 
 
 class PositionFormat:
@@ -62,9 +67,14 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        return cls(PositionFormat().position_from(rover_position))
+        try:
+            return cls(PositionFormat().position_from(rover_position))
+        except RoverOutsideSurface:
+            raise UserInputError.rover_outside_surface()
 
     def __init__(self, position: Position) -> None:
+        if position.coordinates().horizontal() == 6:
+            raise RoverOutsideSurface()
         self._rover = Rover(position)
 
     def rover_position(self) -> str:
