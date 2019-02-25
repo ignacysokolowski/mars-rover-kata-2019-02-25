@@ -9,8 +9,10 @@ class Direction:
     def for_symbol(cls, symbol: str) -> 'Direction':
         if symbol == 'N':
             return cls.north()
-        else:
+        elif symbol == 'S':
             return cls.south()
+        else:
+            raise ValueError(f'Unknown direction: {symbol}')
 
     @classmethod
     def north(cls) -> 'Direction':
@@ -197,6 +199,11 @@ class TestDirection:
     )
     def test_can_be_created_from_symbol(self, symbol: str, direction: Direction) -> None:
         assert Direction.for_symbol(symbol) == direction
+
+    def test_can_not_be_created_from_unknown_symbol(self) -> None:
+        with pytest.raises(ValueError) as error:
+            Direction.for_symbol('X')
+        assert str(error.value) == 'Unknown direction: X'
 
     def test_two_equal_directions(self) -> None:
         assert Direction.north() == Direction.north()
