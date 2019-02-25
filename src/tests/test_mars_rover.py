@@ -40,6 +40,7 @@ class TestMarsRoverApplication:
         'position', [
             '3 4 5',
             '3 4 NS',
+            '3 4 A',
         ]
     )
     def test_rejects_invalid_initial_direction(self, position: str) -> None:
