@@ -57,6 +57,10 @@ class Direction(abc.ABC):
         ...
 
     @abc.abstractmethod
+    def next_to_the_left(self) -> 'Direction':
+        ...
+
+    @abc.abstractmethod
     def symbol(self) -> str:
         ...
 
@@ -81,6 +85,9 @@ class North(Direction):
     def next_to_the_right(self) -> 'Direction':
         return Direction.east()
 
+    def next_to_the_left(self) -> 'Direction':
+        return Direction.west()
+
     def symbol(self) -> str:
         return 'N'
 
@@ -95,6 +102,9 @@ class South(Direction):
 
     def next_to_the_right(self) -> 'Direction':
         return Direction.west()
+
+    def next_to_the_left(self) -> 'Direction':
+        return Direction.east()
 
     def symbol(self) -> str:
         return 'S'
@@ -111,6 +121,9 @@ class East(Direction):
     def next_to_the_right(self) -> 'Direction':
         return Direction.south()
 
+    def next_to_the_left(self) -> 'Direction':
+        return Direction.north()
+
     def symbol(self) -> str:
         return 'E'
 
@@ -125,6 +138,9 @@ class West(Direction):
 
     def next_to_the_right(self) -> 'Direction':
         return Direction.north()
+
+    def next_to_the_left(self) -> 'Direction':
+        return Direction.south()
 
     def symbol(self) -> str:
         return 'W'
@@ -178,6 +194,9 @@ class Rover:
     def turn_right(self) -> None:
         self._direction = self._direction.next_to_the_right()
 
+    def turn_left(self) -> None:
+        self._direction = self._direction.next_to_the_left()
+
     def coordinates(self) -> Coordinates:
         return self._coordinates
 
@@ -226,6 +245,8 @@ class MarsRoverApplication:
             self._rover.move_backward()
         elif command == 'r':
             self._rover.turn_right()
+        elif command == 'l':
+            self._rover.turn_left()
         else:
             raise UserInputError.unknown_command(command)
 
@@ -324,6 +345,19 @@ class TestMarsRoverApplication:
     def test_turns_rover_right(self, initial_direction: str, final_direction: str) -> None:
         app = self.land_rover_with_position('3 4 ' + initial_direction)
         app.execute('r')
+        assert app.rover_position() == '3 4 ' + final_direction
+
+    @pytest.mark.parametrize(
+        ('initial_direction', 'final_direction'), [
+            ('N', 'W'),
+            ('W', 'S'),
+            ('S', 'E'),
+            ('E', 'N'),
+        ]
+    )
+    def test_turns_rover_left(self, initial_direction: str, final_direction: str) -> None:
+        app = self.land_rover_with_position('3 4 ' + initial_direction)
+        app.execute('l')
         assert app.rover_position() == '3 4 ' + final_direction
 
     def test_rejects_unknown_commands(self) -> None:
