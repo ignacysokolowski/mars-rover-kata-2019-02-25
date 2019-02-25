@@ -32,6 +32,9 @@ class Rover:
     def __init__(self, position: Position) -> None:
         self._position = position
 
+    def move_forward(self) -> None:
+        self._position = self._position.moved_vertically_by(1)
+
     def move_vertically_by(self, points: int) -> None:
         self._position = self._position.moved_vertically_by(points)
 
@@ -59,7 +62,7 @@ class MarsRoverApplication:
         if not self._rover:
             raise RuntimeError("Can't move, no rover landed yet")
         if command == 'f':
-            self._rover.move_vertically_by(1)
+            self._rover.move_forward()
         else:
             self._rover.move_vertically_by(-1)
 
