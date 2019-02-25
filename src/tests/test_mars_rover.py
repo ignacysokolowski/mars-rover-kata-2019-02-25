@@ -9,6 +9,12 @@ class Position:
         self._horizontal = horizontal
         self._vertical = vertical
 
+    def horizontal(self) -> int:
+        return self._horizontal
+
+    def vertical(self) -> int:
+        return self._vertical
+
     def __repr__(self) -> str:  # pragma: nocover
         return f'{self.__class__.__name__}({self._horizontal!r}, {self._vertical!r})'
 
@@ -33,7 +39,8 @@ class MarsRoverApplication:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
         horizontal, vertical = self._rover_position.split()
-        self._rover_position = f'{horizontal} {int(vertical) + 1}'
+        position = Position(int(horizontal), int(vertical))
+        self._rover_position = f'{position.horizontal()} {position.vertical() + 1}'
 
 
 class TestMarsRoverApplication:
