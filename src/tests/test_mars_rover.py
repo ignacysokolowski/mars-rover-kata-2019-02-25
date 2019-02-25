@@ -31,6 +31,10 @@ class Direction(abc.ABC):
     def symbol(self) -> str:
         ...
 
+    @abc.abstractmethod
+    def points_north(self) -> int:
+        ...
+
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
 
@@ -48,6 +52,9 @@ class North(Direction):
     def symbol(self) -> str:
         return 'N'
 
+    def points_north(self) -> int:
+        return 1
+
 
 class South(Direction):
 
@@ -57,6 +64,9 @@ class South(Direction):
     def symbol(self) -> str:
         return 'S'
 
+    def points_north(self) -> int:
+        return -1
+
 
 class Coordinates:
 
@@ -65,19 +75,7 @@ class Coordinates:
         self._vertical = vertical
 
     def moved_in(self, direction: Direction) -> 'Coordinates':
-        if direction == Direction.north():
-            return self._moved_north()
-        else:
-            return self._moved_south()
-
-    def _moved_north(self) -> 'Coordinates':
-        return self._moved_vertically_by(1)
-
-    def _moved_south(self) -> 'Coordinates':
-        return self._moved_vertically_by(-1)
-
-    def _moved_vertically_by(self, points: int) -> 'Coordinates':
-        return Coordinates(self._horizontal, self._vertical + points)
+        return Coordinates(self._horizontal, self._vertical + direction.points_north())
 
     def horizontal(self) -> int:
         return self._horizontal
