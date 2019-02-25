@@ -8,6 +8,8 @@ class RoverOutsideSurface(Exception):
 class Rover:
 
     def __init__(self, position: Position) -> None:
+        if position.coordinates().horizontal() == 6:
+            raise RoverOutsideSurface()
         self._position = position
 
     def move_forward(self) -> None:

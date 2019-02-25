@@ -73,8 +73,6 @@ class MarsRoverApplication:
             raise UserInputError.rover_outside_surface()
 
     def __init__(self, position: Position) -> None:
-        if position.coordinates().horizontal() == 6:
-            raise RoverOutsideSurface()
         self._rover = Rover(position)
 
     def rover_position(self) -> str:

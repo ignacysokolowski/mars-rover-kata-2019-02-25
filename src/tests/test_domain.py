@@ -4,6 +4,7 @@ from mars_rover.domain import Coordinates
 from mars_rover.domain import Direction
 from mars_rover.domain import Position
 from mars_rover.domain import Rover
+from mars_rover.domain import RoverOutsideSurface
 
 
 class TestCoordinates:
@@ -68,6 +69,10 @@ class TestPosition:
 
 
 class TestRover:
+
+    def test_can_not_land_outside_of_the_surface(self) -> None:
+        with pytest.raises(RoverOutsideSurface):
+            Rover(Position(Direction.north(), Coordinates(6, 3)))
 
     @pytest.mark.parametrize(
         ('direction', 'initial_coordinates', 'final_coordinates'), [
