@@ -46,7 +46,7 @@ class MarsRoverApplication:
 
     @classmethod
     def landing_with(cls, rover_position: str) -> 'MarsRoverApplication':
-        match = re.match(r'^(\d+) (\d+)$', rover_position)
+        match = re.match(r'^(\d+) (\d+)', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
         return cls(Coordinates(int(match.group(1)), int(match.group(2))))
@@ -55,7 +55,7 @@ class MarsRoverApplication:
         self._rover = Rover(rover_coordinates)
 
     def rover_position(self) -> str:
-        return f'{self._rover.coordinates().horizontal()} {self._rover.coordinates().vertical()}'
+        return f'{self._rover.coordinates().horizontal()} {self._rover.coordinates().vertical()} N'
 
     def execute(self, command: str) -> None:
         if command == 'f':
@@ -71,11 +71,11 @@ class TestMarsRoverApplication:
     def land_rover_with_position(self, position: str) -> MarsRoverApplication:
         return MarsRoverApplication.landing_with(position)
 
-    def test_lands_rover_with_the_given_position(self) -> None:
-        app = self.land_rover_with_position('3 4')
-        assert app.rover_position() == '3 4'
+    def test_lands_rover_at_given_coordinates_and_facing_direction(self) -> None:
+        app = self.land_rover_with_position('3 4 N')
+        assert app.rover_position() == '3 4 N'
 
-    @pytest.mark.parametrize('position', ['34', 'a 4', '4 a'])
+    @pytest.mark.parametrize('position', ['34 N', 'a 4 N', '4 a N'])
     def test_rejects_invalid_initial_position(self, position: str) -> None:
         with pytest.raises(ValueError) as error:
             self.land_rover_with_position(position)
@@ -83,9 +83,9 @@ class TestMarsRoverApplication:
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
-            ('3 4', '3 5'),
-            ('3 3', '3 4'),
-            ('2 3', '2 4'),
+            ('3 4 N', '3 5 N'),
+            ('3 3 N', '3 4 N'),
+            ('2 3 N', '2 4 N'),
         ]
     )
     def test_moves_rover_forward_north(
@@ -99,9 +99,9 @@ class TestMarsRoverApplication:
 
     @pytest.mark.parametrize(
         ('initial_position', 'final_position'), [
-            ('3 4', '3 3'),
-            ('3 3', '3 2'),
-            ('2 3', '2 2'),
+            ('3 4 N', '3 3 N'),
+            ('3 3 N', '3 2 N'),
+            ('2 3 N', '2 2 N'),
         ]
     )
     def test_moves_rover_backward_from_north(
@@ -114,7 +114,7 @@ class TestMarsRoverApplication:
         assert app.rover_position() == final_position
 
     def test_rejects_unknown_commands(self) -> None:
-        app = self.land_rover_with_position('3 4')
+        app = self.land_rover_with_position('3 4 N')
         with pytest.raises(RuntimeError) as error:
             app.execute('x')
         assert str(error.value) == "Unknown command: 'x'"
