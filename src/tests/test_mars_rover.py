@@ -44,7 +44,10 @@ class MarsRoverApplication:
     def execute(self, command: str) -> None:
         if not self._rover_position:
             raise RuntimeError("Can't move, no rover landed yet")
-        self._rover_position = self._rover_position.moved_vertically_by(1)
+        if command == 'f':
+            self._rover_position = self._rover_position.moved_vertically_by(1)
+        else:
+            self._rover_position = self._rover_position.moved_vertically_by(-1)
 
 
 class TestMarsRoverApplication:
@@ -73,6 +76,22 @@ class TestMarsRoverApplication:
     ) -> None:
         self.app.land_rover(initial_position)
         self.app.execute('f')
+        assert self.app.rover_position() == final_position
+
+    @pytest.mark.parametrize(
+        ('initial_position', 'final_position'), [
+            ('3 4', '3 3'),
+            ('3 3', '3 2'),
+            ('2 3', '2 2'),
+        ]
+    )
+    def test_moves_rover_backward_from_north(
+            self,
+            initial_position: str,
+            final_position: str,
+    ) -> None:
+        self.app.land_rover(initial_position)
+        self.app.execute('b')
         assert self.app.rover_position() == final_position
 
     def test_can_not_move_until_the_rover_landed(self) -> None:
