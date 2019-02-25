@@ -3,14 +3,14 @@ import re
 import pytest
 
 
-class Position:
+class Coordinates:
 
     def __init__(self, horizontal: int, vertical: int) -> None:
         self._horizontal = horizontal
         self._vertical = vertical
 
-    def moved_vertically_by(self, points: int) -> 'Position':
-        return Position(self._horizontal, self._vertical + points)
+    def moved_vertically_by(self, points: int) -> 'Coordinates':
+        return Coordinates(self._horizontal, self._vertical + points)
 
     def horizontal(self) -> int:
         return self._horizontal
@@ -22,24 +22,24 @@ class Position:
         return f'{self.__class__.__name__}({self._horizontal!r}, {self._vertical!r})'
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Position):  # pragma: nocover
+        if not isinstance(other, Coordinates):  # pragma: nocover
             return NotImplemented
         return self._horizontal == other._horizontal and self._vertical == other._vertical
 
 
 class Rover:
 
-    def __init__(self, position: Position) -> None:
-        self._position = position
+    def __init__(self, coordinates: Coordinates) -> None:
+        self._coordinates = coordinates
 
     def move_forward(self) -> None:
-        self._position = self._position.moved_vertically_by(1)
+        self._coordinates = self._coordinates.moved_vertically_by(1)
 
     def move_backward(self) -> None:
-        self._position = self._position.moved_vertically_by(-1)
+        self._coordinates = self._coordinates.moved_vertically_by(-1)
 
-    def position(self) -> Position:
-        return self._position
+    def coordinates(self) -> Coordinates:
+        return self._coordinates
 
 
 class MarsRoverApplication:
@@ -49,13 +49,13 @@ class MarsRoverApplication:
         match = re.match(r'^(\d+) (\d+)$', rover_position)
         if not match:
             raise ValueError(f'Invalid position: {rover_position}')
-        return cls(Position(int(match.group(1)), int(match.group(2))))
+        return cls(Coordinates(int(match.group(1)), int(match.group(2))))
 
-    def __init__(self, rover_position: Position) -> None:
-        self._rover = Rover(rover_position)
+    def __init__(self, rover_coordinates: Coordinates) -> None:
+        self._rover = Rover(rover_coordinates)
 
     def rover_position(self) -> str:
-        return f'{self._rover.position().horizontal()} {self._rover.position().vertical()}'
+        return f'{self._rover.coordinates().horizontal()} {self._rover.coordinates().vertical()}'
 
     def execute(self, command: str) -> None:
         if command == 'f':
@@ -120,16 +120,16 @@ class TestMarsRoverApplication:
         assert str(error.value) == "Unknown command: 'x'"
 
 
-class TestPosition:
+class TestCoordinates:
 
-    def test_two_equal_positions(self) -> None:
-        assert Position(3, 4) == Position(3, 4)
+    def test_two_equal_coordinates(self) -> None:
+        assert Coordinates(3, 4) == Coordinates(3, 4)
 
-    def test_two_positions_with_different_horizontal_point(self) -> None:
-        assert Position(3, 4) != Position(2, 4)
+    def test_two_coordinates_with_different_horizontal_point(self) -> None:
+        assert Coordinates(3, 4) != Coordinates(2, 4)
 
-    def test_two_positions_with_different_vertical_point(self) -> None:
-        assert Position(3, 4) != Position(3, 5)
+    def test_two_coordinates_with_different_vertical_point(self) -> None:
+        assert Coordinates(3, 4) != Coordinates(3, 5)
 
-    def test_position_moved_vertically(self) -> None:
-        assert Position(3, 4).moved_vertically_by(1) == Position(3, 5)
+    def test_coordinates_moved_vertically(self) -> None:
+        assert Coordinates(3, 4).moved_vertically_by(1) == Coordinates(3, 5)
