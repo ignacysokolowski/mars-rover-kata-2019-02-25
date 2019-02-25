@@ -32,10 +32,17 @@ class PositionFormat:
         return Position(direction, self._coordinates_from(match))
 
     def _pattern(self) -> Pattern:
-        return re.compile(r'^(\d+) (\d+) (?P<direction>[A-Z])$')
+        return re.compile(
+            r'^(?P<horizontal>\d+) '
+            r'(?P<vertical>\d+) '
+            r'(?P<direction>[A-Z])$'
+        )
 
     def _coordinates_from(self, match: Match) -> Coordinates:
-        return Coordinates(int(match.group(1)), int(match.group(2)))
+        return Coordinates(
+            int(match.group('horizontal')),
+            int(match.group('vertical')),
+        )
 
     def output_from(self, position: Position) -> str:
         return (
