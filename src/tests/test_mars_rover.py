@@ -1,9 +1,10 @@
+import abc
 import re
 
 import pytest
 
 
-class Direction:
+class Direction(abc.ABC):
 
     @classmethod
     def for_symbol(cls, symbol: str) -> 'Direction':
@@ -16,31 +17,45 @@ class Direction:
 
     @classmethod
     def north(cls) -> 'Direction':
-        return Direction('N')
+        return North()
 
     @classmethod
     def south(cls) -> 'Direction':
-        return Direction('S')
+        return South()
 
-    def __init__(self, symbol: str) -> None:
-        self._symbol = symbol
-
+    @abc.abstractmethod
     def opposite(self) -> 'Direction':
-        if self == Direction.north():
-            return Direction.south()
-        else:
-            return Direction.north()
+        ...
 
+    @abc.abstractmethod
     def symbol(self) -> str:
-        return self._symbol
+        ...
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({self._symbol!r})'
+        return f'{self.__class__.__name__}()'
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Direction):  # pragma: nocover
             return NotImplemented
-        return self._symbol == other._symbol
+        return type(self) == type(other)
+
+
+class North(Direction):
+
+    def opposite(self) -> 'Direction':
+        return Direction.south()
+
+    def symbol(self) -> str:
+        return 'N'
+
+
+class South(Direction):
+
+    def opposite(self) -> 'Direction':
+        return Direction.north()
+
+    def symbol(self) -> str:
+        return 'S'
 
 
 class Coordinates:
