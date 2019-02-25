@@ -29,11 +29,7 @@ class PositionFormat:
         match = self._pattern().match(user_input)
         if not match:
             raise UserInputError.invalid_position(user_input)
-        try:
-            direction = Direction.for_symbol(match.group('direction'))
-        except ValueError:
-            raise UserInputError.invalid_direction(match.group('direction'))
-        return Position(direction, self._coordinates_from(match))
+        return Position(self._direction_from(match), self._coordinates_from(match))
 
     def _pattern(self) -> Pattern:
         return re.compile(
@@ -41,6 +37,12 @@ class PositionFormat:
             r'(?P<vertical>\d+) '
             r'(?P<direction>.*)'
         )
+
+    def _direction_from(self, match: Match) -> Direction:
+        try:
+            return Direction.for_symbol(match.group('direction'))
+        except ValueError:
+            raise UserInputError.invalid_direction(match.group('direction'))
 
     def _coordinates_from(self, match: Match) -> Coordinates:
         return Coordinates(
