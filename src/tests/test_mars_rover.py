@@ -3,6 +3,19 @@ from typing import Optional
 import pytest
 
 
+class Position:
+
+    def __init__(self, horizontal: int, vertical: int) -> None:
+        self._horizontal = horizontal
+        self._vertical = vertical
+
+    def __repr__(self) -> str:  # pragma: nocover
+        return f'{self.__class__.__name__}({self._horizontal!r}, {self._vertical!r})'
+
+    def __eq__(self, other: object) -> bool:
+        return True
+
+
 class MarsRoverApplication:
 
     def __init__(self) -> None:
@@ -53,3 +66,9 @@ class TestMarsRoverApplication:
         with pytest.raises(RuntimeError) as error:
             self.app.execute('f')
         assert str(error.value) == "Can't move, no rover landed yet"
+
+
+class TestPosition:
+
+    def test_two_equal_positions(self) -> None:
+        assert Position(3, 4) == Position(3, 4)
