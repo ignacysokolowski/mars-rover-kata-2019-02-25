@@ -69,15 +69,14 @@ class MarsRoverApplication:
 
 class TestMarsRoverApplication:
 
-    def setup_method(self) -> None:
-        self.app = MarsRoverApplication()
-
     def land_rover_with_position(self, position: str) -> MarsRoverApplication:
-        self.app.land_rover(position)
-        return self.app
+        app = MarsRoverApplication()
+        app.land_rover(position)
+        return app
 
     def test_reports_no_rover_position_before_the_rover_landed(self) -> None:
-        assert self.app.rover_position() is None
+        app = MarsRoverApplication()
+        assert app.rover_position() is None
 
     def test_lands_rover_with_the_given_position(self) -> None:
         app = self.land_rover_with_position('3 4')
@@ -116,8 +115,9 @@ class TestMarsRoverApplication:
         assert app.rover_position() == final_position
 
     def test_can_not_move_until_the_rover_landed(self) -> None:
+        app = MarsRoverApplication()
         with pytest.raises(RuntimeError) as error:
-            self.app.execute('f')
+            app.execute('f')
         assert str(error.value) == "Can't move, no rover landed yet"
 
     def test_rejects_unknown_commands(self) -> None:
